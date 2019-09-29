@@ -1,11 +1,14 @@
 {
   "name": "lytek",
-  "description": "Character management web app for Exalted 2.5 edition",
+  "description": "Web utilities for Exalted 2.5e",
   "version": "0.1.0",
   "private": true,
   "author": "Rook <rook@sharpcla.ws>",
   "license": "UNLICENSED",
-  "repository": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sethb0/lytek.git"
+  },
   "engines": {
     "node": "^12.10.0",
     "npm": "^6.11.3"
