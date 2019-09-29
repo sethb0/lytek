@@ -17,6 +17,7 @@ module.exports = {
       .alias
       .merge({
         'vue-router$': 'vue-router/dist/vue-router.esm.js',
+        vuex$: 'vuex/dist/vuex.esm.js',
       });
     config
       .module
