@@ -71,6 +71,7 @@ async function server (mode, { BOT_API_TOKEN, DATABASE_URL, KOA_SECRET, MONGODB_
     promiseLibrary: Promise,
     appname: app.name,
     useNewUrlParser: true,
+    useUnifiedTopology: true,
     validateOptions: true,
   });
   app.context.mongo = mongoClient.db();
