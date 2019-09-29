@@ -1,5 +1,6 @@
 /* eslint callback-return: off */
 import Koa from 'koa';
+import { MongoClient, Logger as MongoLogger } from 'mongodb';
 import bodyParser from 'koa-bodyparser';
 import http from 'http';
 import https from 'https';
@@ -7,6 +8,7 @@ import json from 'koa-json';
 import path from 'path';
 import pgPromise from 'pg-promise';
 import router from 'koa-simple-router';
+import tls from 'tls';
 import winston from 'winston';
 
 import { dummyAPI } from './api';
@@ -17,7 +19,7 @@ const DEFAULT_CACHE_CONTROL = 'public, max-age=60';
 const LONG_TERM_CACHE_CONTROL = 'public, max-age=31536000, immutable';
 const STATIC_DIR = path.resolve(__dirname, '..', 'dist');
 
-async function server (mode, { BOT_API_TOKEN, DATABASE_URL, KOA_SECRET }) {
+async function server (mode, { BOT_API_TOKEN, DATABASE_URL, KOA_SECRET, MONGODB_URI }) {
   if (!mode) {
     throw new Error('missing mode');
   }
@@ -30,6 +32,9 @@ async function server (mode, { BOT_API_TOKEN, DATABASE_URL, KOA_SECRET }) {
   if (!KOA_SECRET) {
     throw new Error('missing KOA_SECRET');
   }
+  if (!MONGODB_URI) {
+    throw new Error('missing MONGODB_URI');
+  }
 
   const app = new Koa();
   app.name = 'lytek';
@@ -37,7 +42,7 @@ async function server (mode, { BOT_API_TOKEN, DATABASE_URL, KOA_SECRET }) {
 
   app.keys = [Buffer.from(deUrlSafe(KOA_SECRET), 'base64')];
 
-  app.context.logger = winston.createLogger({
+  const logger = winston.createLogger({
     level: mode === 'production' ? 'info' : 'debug',
     format: mode === 'production'
       ? winston.format.combine(
@@ -53,8 +58,22 @@ async function server (mode, { BOT_API_TOKEN, DATABASE_URL, KOA_SECRET }) {
       new winston.transports.Console({ handleExceptions: true }),
     ],
   });
+  app.context.logger = logger;
 
-  app.context.db = pgPromise({ promiseLib: Promise })(DATABASE_URL);
+  app.context.pg = pgPromise({ promiseLib: Promise })(DATABASE_URL);
+
+  MongoLogger.setCurrentLogger((msg) => logger.error(msg));
+  const mongoClient = await MongoClient.connect(MONGODB_URI, {
+    ssl: true,
+    sslValidate: true,
+    sslCA: tls.rootCertificates,
+    reconnectTries: 5,
+    promiseLibrary: Promise,
+    appname: app.name,
+    useNewUrlParser: true,
+    validateOptions: true,
+  });
+  app.context.mongo = mongoClient.db();
 
   if (mode !== 'production') {
     app.use(requestLogger({ colorize: true }));
@@ -137,11 +156,7 @@ async function server (mode, { BOT_API_TOKEN, DATABASE_URL, KOA_SECRET }) {
 }
 
 function deUrlSafe (b64u) {
-  let out = b64u.replace(/-/gu, '+').replace(/_/gu, '/');
-  while (out.length % 4) {
-    out += '=';
-  }
-  return out;
+  return b64u.replace(/-/gu, '+').replace(/_/gu, '/');
 }
 
 function checkScope (scopes) { // eslint-disable-line no-unused-vars
