@@ -12,7 +12,11 @@ const command = process.argv[2];
 const configDir = process.env.CONFIG_DIR || __dirname;
 const mode = process.env.NODE_ENV || 'development';
 
-dotenv.config(path.resolve(configDir, `.env.${mode}`));
+const { error } = dotenv.config({ path: path.resolve(configDir, `.env.${mode}`) });
+if (error) {
+  console.error('%s: %O', command, error);
+  process.exit(1);
+}
 
 import(path.resolve(__dirname, command, 'start'))
   .then(({ 'default': run }) => run({ mode, readConfig: makeReadConfig(configDir) }))
