@@ -12,22 +12,25 @@
         <span v-else-if="isUser">an approved user. Game on!</span>
         <span v-else>a restricted user. Sad!</span>
       </p>
-      <p>
-        The navbar above displays links to all of the features of this website
-        <span v-if="isAdmin">(including the scary ones).</span>
-        <span v-else>that you are authorized to use.</span>
-        Enjoy!
-      </p>
     </template>
     <template v-else>
       <p>
         This website is for authorized users only. Please
-        <b-link :to="{ name: 'login' }">sign in <fa-i :icon="faSignIn"></fa-i></b-link>
+        <b-link :to="{ name: 'login' }">sign in&nbsp;<fa-i :icon="faSignIn"></fa-i></b-link>
         or contact the website administrator to register an account.
       </p>
+    </template>
+    <template v-if="authenticated" #additional>
+      <p>
+        The navbar above displays links to all of the features of this website
+        <span v-if="isAdmin">(including the scary ones).</span>
+        <span v-else>that you are authorized to use.</span>
+      </p>
+    </template>
+    <template v-else #additional>
       <p>
         If you don't already know who the website administrator is and how to contact them,
-        you have no business here.
+        you have no business here. Shoo.
       </p>
     </template>
   </mf-framework>
