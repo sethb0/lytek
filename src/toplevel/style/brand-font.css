@@ -1,16 +1,16 @@
 @font-face {
   font-family: "Pterra";
+  font-style: normal;
+  font-weight: normal;
   src: local("Pterra"), local("Pterra Regular"),
     url("../font/36A101_0_0.woff2") format("woff2"),
     url("../font/36A101_0_0.woff") format("woff"),
     url("../font/36A101_0_0.ttf") format("truetype");
-  font-style: normal;
-  font-weight: normal;
 }
 
 .brand-font {
+  color: goldenrod !important;
   font-family: "Pterra";
   font-style: normal;
   font-weight: normal;
-  color: goldenrod;
 }

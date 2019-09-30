@@ -50,6 +50,7 @@
     "winston": "^3.2.1"
   },
   "devDependencies": {
+    "@auth0/auth0-spa-js": "^1.2.4",
     "@babel/cli": "^7.6.2",
     "@fortawesome/fontawesome-svg-core": "^1.2.25",
     "@fortawesome/pro-duotone-svg-icons": "^5.11.2",

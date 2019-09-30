@@ -12,7 +12,7 @@ import tls from 'tls';
 import winston from 'winston';
 
 import { dummyAPI } from './api';
-import { auth0JWT as jwt } from './auth0-jwt';
+import { auth0Jwt as jwt } from './auth0-jwt';
 import { requestLogger } from './request-logger';
 
 const DEFAULT_CACHE_CONTROL = 'public, max-age=60';
@@ -83,11 +83,11 @@ async function server (mode, { BOT_API_TOKEN, DATABASE_URL, KOA_SECRET, MONGODB_
   if (mode !== 'production') {
     app.use(async (ctx, next) => {
       // eslint-disable-next-line max-len
-      ctx.set('Content-Security-Policy', "default-src 'self'; connect-src 'self'; font-src 'self' https://fonts.gstatic.com; frame-src 'self'; img-src 'self' data:; style-src 'self' https://fonts.googleapis.com; form-action 'self'; frame-ancestors 'self'; report-uri https://metalfatigue.report-uri.com/r/d/csp/enforce");
+      ctx.set('Content-Security-Policy', "default-src 'self'; connect-src 'self' https://mfllc.auth0.com; font-src 'self' https://fonts.gstatic.com; frame-src 'self' https://mfllc.auth0.com; img-src 'self' data: https://cdn.discordapp.com; style-src 'self' https://fonts.googleapis.com; form-action 'self'; frame-ancestors 'self'; report-uri https://metalfatigue.report-uri.com/r/d/csp/enforce");
       // eslint-disable-next-line max-len
       ctx.set('Expect-CT', 'enforce, max-age=31536000, report-uri="https://metalfatigue.report-uri.com/r/d/ct/enforce"');
       // eslint-disable-next-line max-len
-      ctx.set('Feature-Policy', "autoplay 'none'; camera 'none'; document-write 'none'; encrypted-media 'none'; fullscreen 'self'; geolocation 'none'; microphone 'none'; midi 'none'; notifications 'self'; payment 'none'; push 'self'; sync-xhr 'self'; usb 'none'; vibrate 'none'; vr 'none'");
+      ctx.set('Feature-Policy', "autoplay 'none'; camera 'none'; document-write 'none'; encrypted-media 'none'; fullscreen 'self'; geolocation 'none'; microphone 'none'; midi 'none'; notifications 'self'; payment 'none'; push 'self'; sync-xhr 'self' https://mfllc.auth0.com; usb 'none'; vibrate 'none'; vr 'none'");
       ctx.set('Referrer-Policy', 'strict-origin-when-cross-origin');
       ctx.set('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
       ctx.set('X-Content-Type-Options', 'nosniff');
@@ -247,12 +247,15 @@ export default async function run ({ mode, readConfig }) {
 
   const cb = await server(mode, process.env); // eslint-disable-line no-process-env
 
+  let hostname;
   let protocol;
   let srv;
   if (mode === 'production') {
+    hostname = '::1';
     protocol = 'HTTP';
     srv = http.createServer(cb);
   } else {
+    hostname = process.env.LISTEN_HOST || '::'; // eslint-disable-line no-process-env
     protocol = 'HTTPS';
     srv = https.createServer({
       key: readConfig('PRIVATE_KEY', 'private.pem', 'private key'),
@@ -263,7 +266,7 @@ ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:
 ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:
 ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305
       `.replace(/\s/gu, ''),
-      ecdhCurve: 'prime256v1:secp384r1:secp521r1',
+      ecdhCurve: 'X25519:P-256:P-384:P-521',
       honorCipherOrder: false,
       minVersion: 'TLSv1.2',
     }, cb);
@@ -272,11 +275,12 @@ ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305
   return new Promise((resolve, reject) => {
     srv.on('error', reject); // this is why we can't just use util.promisify
     try {
-      srv.listen(port, mode === 'production' && '::1', (err) => {
+      srv.listen(port, hostname, (err) => {
         if (err) {
           reject(err);
         } else {
-          resolve(`${protocol} server started on port ${port}`);
+          const h = hostname.includes(':') ? `[${hostname}]` : hostname;
+          resolve(`${protocol} server started on ${h}:${port}`);
         }
       });
     } catch (err) {

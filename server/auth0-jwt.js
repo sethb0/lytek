@@ -3,7 +3,7 @@ import jwt from 'koa-jwt';
 import { TokenExpiredError, JsonWebTokenError } from 'jsonwebtoken';
 import { koaJwtSecret, JwksRateLimitError, SigningKeyNotFoundError } from 'jwks-rsa';
 
-export function auth0JWT (options = {}) {
+export function auth0Jwt (options = {}) {
   const opts = { ...options };
   if (!opts.tenant) {
     throw new Error('no Auth0 tenant name specified');
