@@ -10,7 +10,7 @@ import router from 'koa-simple-router';
 import tls from 'tls';
 import winston from 'winston';
 
-import { dummy as dummyAPI } from './dummy-api';
+// import { dummy as dummyAPI } from './dummy-api';
 import { charmTypes as charmTypesAPI, charmGroups as charmGroupsAPI, charmData as charmDataAPI,
   quick as charmQuickDataAPI } from './charms-api';
 import { auth0Jwt as jwt } from './auth0-jwt';
@@ -24,13 +24,13 @@ const STATIC_DIR = path.resolve(__dirname, '..', 'dist');
 
 const DEFAULT_PORT = 5000;
 
-async function server (mode, { BOT_API_TOKEN, DATABASE_URL, KOA_SECRET, MONGODB_URI }) {
+async function server (mode, { /* BOT_API_TOKEN, */ DATABASE_URL, KOA_SECRET, MONGODB_URI }) {
   if (!mode) {
     throw new Error('missing mode');
   }
-  if (!BOT_API_TOKEN) {
-    throw new Error('missing BOT_API_TOKEN');
-  }
+  // if (!BOT_API_TOKEN) {
+  //   throw new Error('missing BOT_API_TOKEN');
+  // }
   if (!DATABASE_URL) {
     throw new Error('missing DATABASE_URL');
   }
@@ -80,9 +80,7 @@ async function server (mode, { BOT_API_TOKEN, DATABASE_URL, KOA_SECRET, MONGODB_
   });
   app.context.mongo = mongoClient.db();
 
-  if (mode !== 'production') {
-    app.use(requestLogger({ colorize: true }));
-  }
+  app.use(requestLogger({ colorize: mode !== 'production' }));
 
   if (mode !== 'production') {
     app.use(async (ctx, next) => {
@@ -122,10 +120,10 @@ async function server (mode, { BOT_API_TOKEN, DATABASE_URL, KOA_SECRET, MONGODB_
       router(
         { prefix: '/api' },
         (rr) => {
-          rr.all('/charms/types', charmTypesAPI);
-          rr.all('/charms/groups/:type', charmGroupsAPI);
-          rr.all('/charms/data/:type/:group', charmDataAPI);
-          rr.all('/charms/quick/:type/:group', charmQuickDataAPI);
+          rr.all('/charms', charmTypesAPI);
+          rr.all('/charms/:type', charmGroupsAPI);
+          rr.all('/charms/:type/:group', charmDataAPI);
+          rr.all('/charms/_quick/:type/:group', charmQuickDataAPI);
         },
       ),
       unrecognizedAPI,
@@ -133,20 +131,20 @@ async function server (mode, { BOT_API_TOKEN, DATABASE_URL, KOA_SECRET, MONGODB_
 
     r.all('/api', unrecognizedAPI);
 
-    const botApiToken = deUrlSafe(BOT_API_TOKEN);
-    r.all(
-      '/bot/*',
-      checkBotToken(botApiToken),
-      router(
-        { prefix: '/bot' },
-        (rr) => {
-          rr.all('/dummy', dummyAPI);
-        },
-      ),
-      unrecognizedAPI,
-    );
-
-    r.all('/bot', unrecognizedAPI);
+    // const botApiToken = deUrlSafe(BOT_API_TOKEN);
+    // r.all(
+    //   '/bot/*',
+    //   checkBotToken(botApiToken),
+    //   router(
+    //     { prefix: '/bot' },
+    //     (rr) => {
+    //       rr.all('/dummy', dummyAPI);
+    //     },
+    //   ),
+    //   unrecognizedAPI,
+    // );
+    //
+    // r.all('/bot', unrecognizedAPI);
   }));
 
   if (mode !== 'production') {
@@ -181,15 +179,15 @@ function checkScope (scopes) { // eslint-disable-line no-unused-vars
   };
 }
 
-function checkBotToken (token) {
-  const re = new RegExp(`^ *Bearer +${token} *$`, 'u');
-  return async (ctx, next) => {
-    if (!re.test(ctx.headers.authorization)) {
-      ctx.throw(403);
-    }
-    await next();
-  };
-}
+// function checkBotToken (token) {
+//   const re = new RegExp(`^ *Bearer +${token} *$`, 'u');
+//   return async (ctx, next) => {
+//     if (!re.test(ctx.headers.authorization)) {
+//       ctx.throw(403);
+//     }
+//     await next();
+//   };
+// }
 
 async function unrecognizedAPI (ctx) {
   ctx.throw(400, 'unrecognized API request');

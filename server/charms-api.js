@@ -64,7 +64,9 @@ function wrap (f) {
           }
           ctx.status = 500;
           const body = { error: 'database_error' };
-          if (ctx.mode !== 'production') {
+          if (ctx.mode === 'production') {
+            ctx.logger.error(err.message);
+          } else {
             // eslint-disable-next-line camelcase
             body.error_description = err.message;
           }
@@ -152,7 +154,7 @@ function rewriteGenerics (charms, { type, group }) {
       g = g.replace(/ (\S?)/gu, (match, p1) => p1.toUpperCase());
     }
     if (charm.variants) {
-      const variant = charm.variants.first((v) => v.id === g);
+      const variant = charm.variants.find((v) => v.id === g);
       let { description } = charm;
       if (variant?.description) {
         const gTxt = group === 'Ebon Dragon' ? 'The Ebon Dragon' : group;

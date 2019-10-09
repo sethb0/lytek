@@ -1,0 +1,162 @@
+openapi: 3.0.2
+info:
+  title: Lytek
+  description: Web utilities for _Exalted_ 2.5e
+  version: 0.1.0
+  contact:
+    name: Seth Blumberg
+    email: sethb@pobox.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+  - url: https://lytek.sharpcla.ws/api
+    description: Production server
+  - url: /api
+    description: Development server
+components:
+  parameters:
+    TypeIdParameter:
+      name: type
+      in: path
+      description: Type ID for which to retrieve information
+      required: true
+      schema:
+        $ref: '#/components/schemas/TypeId'
+    GroupIdParameter:
+      name: group
+      in: path
+      description: Group ID for which to retrieve information
+      required: true
+      schema:
+        $ref: '#/components/schemas/GroupId'
+  responses:
+    AuthenticateResponse:
+      description: Response indicating that no suitable authentication token was presented
+      headers:
+        WWW-Authenticate:
+          description: Description of expected authentication token
+          schema:
+            type: string
+    ErrorResponse:
+      $ref: 'https://api.swaggerhub.com/domains/mfllc/sharpcla.ws/0.1.0#/components/responses/ErrorResponse'
+  schemas:
+    CharmId:
+      description: The unique identifier of a Charm (possibly including a variant suffix)
+      type: string
+      pattern: '^[^\s.]+\.[^\s.]+(\.\S+)?$'
+    CharmData:
+      description: Data object describing a Charm
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/CharmId'
+      required: ['id']
+    GroupId:
+      description: The identifier of a Charm group within a given Charm type (not unique across types)
+      type: string
+      pattern: '^\S+( \S+)*$'
+    TypeId:
+      description: The unique identifier of a Charm type
+      type: string
+      pattern: '^\w+(-\w+)*$'
+paths:
+  /charms:
+    get:
+      description: Returns all known Charm type IDs
+      responses:
+        '200':
+          description: A list of Charm type IDs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TypeId'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/AuthenticateResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/ErrorResponse'
+  /charms/{type}:
+    parameters:
+      - $ref: '#/components/parameters/TypeIdParameter'
+    get:
+      description: Returns all known Charm group IDs for the given type
+      responses:
+        '200':
+          description: A list of Charm group IDs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GroupId'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/AuthenticateResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/ErrorResponse'
+  /charms/{type}/{group}:
+    parameters:
+      - $ref: '#/components/parameters/TypeIdParameter'
+      - $ref: '#/components/parameters/GroupIdParameter'
+    get:
+      description: Returns all Charm data for the given type and group
+      responses:
+        '200':
+          description: A list of Charm data objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CharmData'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/AuthenticateResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/ErrorResponse'
+  /charms/_quick/{type}/{group}:
+    parameters:
+      - $ref: '#/components/parameters/TypeIdParameter'
+      - $ref: '#/components/parameters/GroupIdParameter'
+    get:
+      description: Returns type list, group list and Charm data all at once for efficient startup
+      responses:
+        '200':
+          description: Combined type list, group list and Charm data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  charms:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CharmData'
+                  groups:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/GroupId'
+                  types:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TypeId'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/AuthenticateResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/ErrorResponse'

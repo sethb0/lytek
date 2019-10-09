@@ -73,17 +73,17 @@ export class CharmsService {
   }
 
   async _loadTypes () {
-    const a = await this._loadStringArray('charms/types');
+    const a = await this._loadStringArray('charms');
     return Object.fromEntries(a.map((x) => [x, null]));
   }
 
   async _loadGroups (type) {
-    const a = await this._loadStringArray(`charms/groups/${encodeURIComponent(type)}`);
+    const a = await this._loadStringArray(`charms/${encodeURIComponent(type)}`);
     return Object.fromEntries(a.map((x) => [x, null]));
   }
 
   async _loadCharms (type, group) {
-    const api = `charms/data/${encodeURIComponent(type)}/${encodeURIComponent(group)}`;
+    const api = `charms/${encodeURIComponent(type)}/${encodeURIComponent(group)}`;
     const json = await this._load(api);
     if (!json || !Array.isArray(json) || !json.every(
       (y) => y && typeof y === 'object' && !Array.isArray(y) && y.id && typeof y.id === 'string'
