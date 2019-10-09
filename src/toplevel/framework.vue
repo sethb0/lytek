@@ -1,36 +1,3 @@
-<template>
-  <div class="mb-3 d-flex flex-wrap flex-md-nowrap justify-content-center">
-    <div class="mx-auto mx-md-0">
-      <b-img class="logo mx-sm-3 mb-3" :src="logo" alt="Sol Invictus">
-      </b-img>
-    </div>
-    <div class="mx-auto mx-md-0">
-      <b-jumbotron :header-level="headerLevel" :border-variant="variant" class="mx-sm-3">
-        <template #header>
-          <slot name="header"><em class="brand-font">{{ header }}</em></slot>
-        </template>
-        <template #lead><slot name="default"></slot></template>
-        <template #default>
-          <slot name="additional"></slot>
-          <template v-if="legalNotice">
-            <div :class="`bg-${variant}`" class="fake-hr my-4 w-100"></div>
-            <p class="legal-notice">
-              Portions of the materials are the copyrights and trademarks of White Wolf
-              Entertainment&nbsp;AB, and are used with permission. All rights reserved. For
-              more information please visit
-              <b-link href="https://www.white-wolf.com" no-prefetch>white-wolf.com</b-link>.
-            </p>
-            <b-link href="https://www.white-wolf.com/dark-pack" no-prefetch>
-              <b-img class="dark-pack" :src="darkpack" alt="White Wolf Dark Pack logo">
-              </b-img>
-            </b-link>
-          </template>
-        </template>
-      </b-jumbotron>
-    </div>
-  </div>
-</template>
-
 <script>
 import darkpack from '@/toplevel/img/darkpack.jpg';
 import logo from '@/toplevel/img/logo256.png';
@@ -62,6 +29,39 @@ export default {
   },
 };
 </script>
+
+<template>
+  <div class="mb-3 d-flex flex-wrap flex-md-nowrap justify-content-center">
+    <div class="mx-auto mx-md-0">
+      <b-img class="logo mx-sm-3 mb-3" :src="logo" alt="Sol Invictus">
+      </b-img>
+    </div>
+    <div class="mx-auto mx-md-0">
+      <b-jumbotron :header-level="headerLevel" :border-variant="variant" class="mx-sm-3">
+        <template #header>
+          <slot name="header"><em class="brand-font">{{ header }}</em></slot>
+        </template>
+        <template #lead><slot name="default"></slot></template>
+        <template #default>
+          <slot name="additional"></slot>
+          <template v-if="legalNotice">
+            <div :class="`bg-${variant}`" class="fake-hr my-4 w-100"></div>
+            <p class="legal-notice">
+              Portions of the materials are the copyrights and trademarks of White Wolf
+              Entertainment&nbsp;AB, and are used with permission. All rights reserved. For
+              more information please visit
+              <b-link href="https://www.white-wolf.com">white-wolf.com</b-link>.
+            </p>
+            <b-link href="https://www.white-wolf.com/dark-pack">
+              <b-img class="dark-pack" :src="darkpack" alt="White Wolf Dark Pack logo">
+              </b-img>
+            </b-link>
+          </template>
+        </template>
+      </b-jumbotron>
+    </div>
+  </div>
+</template>
 
 <style scoped>
 .jumbotron {

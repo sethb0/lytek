@@ -1,3 +1,11 @@
+<script>
+import MfFramework from '@/toplevel/framework.vue';
+
+export default {
+  components: { MfFramework },
+};
+</script>
+
 <template>
   <mf-framework variant="info" legal-notice>
     Another joyful frobnitz from Metal&nbsp;Fatigue&nbsp;LLC!
@@ -10,11 +18,3 @@
     </template>
   </mf-framework>
 </template>
-
-<script>
-import MfFramework from '@/toplevel/framework.vue';
-
-export default {
-  components: { MfFramework },
-};
-</script>

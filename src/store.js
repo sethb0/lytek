@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 
 import auth from '@/auth/store';
 // import characters from '@/characters/store';
-// import charms from '@/charms/store';
+import charms from '@/charms/store';
 // import chronicles from '@/chronicles/store';
 
 Vue.use(Vuex);
@@ -13,7 +13,7 @@ export default new Vuex.Store({
   modules: {
     auth,
     // characters,
-    // charms,
+    charms,
     // chronicles,
   },
 });

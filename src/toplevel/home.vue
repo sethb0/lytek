@@ -1,3 +1,23 @@
+<script>
+import { FontAwesomeIcon as FaI } from '@fortawesome/vue-fontawesome';
+import { faSignIn } from '@fortawesome/pro-duotone-svg-icons';
+import { mapGetters } from 'vuex';
+
+import MfFramework from '@/toplevel/framework.vue';
+
+export default {
+  components: { FaI, MfFramework },
+  data: () => ({ faSignIn }),
+  computed: mapGetters('auth', [
+    'authenticated',
+    'friendlyName',
+    'isAdmin',
+    'isGm',
+    'isUser',
+  ]),
+};
+</script>
+
 <template>
   <mf-framework header="Welcome to Lytek!" :header-level="4" variant="success">
     <template v-if="authenticated">
@@ -35,23 +55,3 @@
     </template>
   </mf-framework>
 </template>
-
-<script>
-import { FontAwesomeIcon as FaI } from '@fortawesome/vue-fontawesome';
-import { faSignIn } from '@fortawesome/pro-duotone-svg-icons';
-import { mapGetters } from 'vuex';
-
-import MfFramework from '@/toplevel/framework.vue';
-
-export default {
-  components: { FaI, MfFramework },
-  data: () => ({ faSignIn }),
-  computed: mapGetters('auth', [
-    'authenticated',
-    'friendlyName',
-    'isAdmin',
-    'isGm',
-    'isUser',
-  ]),
-};
-</script>

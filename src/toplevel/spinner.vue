@@ -1,7 +1,3 @@
-<template>
-  <fa-i :icon="spinner" spin class="spinner"></fa-i>
-</template>
-
 <script>
 import { FontAwesomeIcon as FaI } from '@fortawesome/vue-fontawesome';
 import { faSun } from '@fortawesome/pro-duotone-svg-icons/faSun';
@@ -13,6 +9,10 @@ export default {
   },
 };
 </script>
+
+<template>
+  <fa-i :icon="spinner" spin class="spinner"></fa-i>
+</template>
 
 <style scoped>
 .spinner {

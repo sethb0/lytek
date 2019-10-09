@@ -6,18 +6,23 @@ import http from 'http';
 import https from 'https';
 import json from 'koa-json';
 import path from 'path';
-import pgPromise from 'pg-promise';
 import router from 'koa-simple-router';
 import tls from 'tls';
 import winston from 'winston';
 
-import { dummyAPI } from './api';
+import { dummy as dummyAPI } from './dummy-api';
+import { charmTypes as charmTypesAPI, charmGroups as charmGroupsAPI, charmData as charmDataAPI,
+  quick as charmQuickDataAPI } from './charms-api';
 import { auth0Jwt as jwt } from './auth0-jwt';
 import { requestLogger } from './request-logger';
 
+const APP_NAME = 'lytek';
+const CLIENT_ID = 'qKmlCFgdNi02xeV33lvtMWJ3H1cLFIgV';
 const DEFAULT_CACHE_CONTROL = 'public, max-age=60';
 const LONG_TERM_CACHE_CONTROL = 'public, max-age=31536000, immutable';
 const STATIC_DIR = path.resolve(__dirname, '..', 'dist');
+
+const DEFAULT_PORT = 5000;
 
 async function server (mode, { BOT_API_TOKEN, DATABASE_URL, KOA_SECRET, MONGODB_URI }) {
   if (!mode) {
@@ -37,10 +42,11 @@ async function server (mode, { BOT_API_TOKEN, DATABASE_URL, KOA_SECRET, MONGODB_
   }
 
   const app = new Koa();
-  app.name = 'lytek';
+  app.name = APP_NAME;
   app.proxy = mode === 'production';
-
   app.keys = [Buffer.from(deUrlSafe(KOA_SECRET), 'base64')];
+
+  app.context.mode = mode;
 
   const logger = winston.createLogger({
     level: mode === 'production' ? 'info' : 'debug',
@@ -59,8 +65,6 @@ async function server (mode, { BOT_API_TOKEN, DATABASE_URL, KOA_SECRET, MONGODB_
     ],
   });
   app.context.logger = logger;
-
-  app.context.pg = pgPromise({ promiseLib: Promise })(DATABASE_URL);
 
   MongoLogger.setCurrentLogger((msg) => logger.error(msg));
   const mongoClient = await MongoClient.connect(MONGODB_URI, {
@@ -111,13 +115,17 @@ async function server (mode, { BOT_API_TOKEN, DATABASE_URL, KOA_SECRET, MONGODB_
       '/api/*',
       jwt({
         tenant: 'mfllc',
-        audience: 'http://lytek.sharpcla.ws',
-        expose: true,
+        audience: `https://${APP_NAME}.sharpcla.ws`,
+        clientId: CLIENT_ID,
+        expose: mode !== 'production',
       }),
       router(
         { prefix: '/api' },
         (rr) => {
-          rr.all('/dummy/', dummyAPI());
+          rr.all('/charms/types', charmTypesAPI);
+          rr.all('/charms/groups/:type', charmGroupsAPI);
+          rr.all('/charms/data/:type/:group', charmDataAPI);
+          rr.all('/charms/quick/:type/:group', charmQuickDataAPI);
         },
       ),
       unrecognizedAPI,
@@ -132,7 +140,7 @@ async function server (mode, { BOT_API_TOKEN, DATABASE_URL, KOA_SECRET, MONGODB_
       router(
         { prefix: '/bot' },
         (rr) => {
-          rr.all('/dummy/', dummyAPI());
+          rr.all('/dummy', dummyAPI);
         },
       ),
       unrecognizedAPI,
@@ -242,8 +250,16 @@ function handleError (mode) {
 }
 
 export default async function run ({ mode, readConfig }) {
-  const defaultPort = mode === 'production' ? 18002 : 5000;
-  const port = process.env.PORT || defaultPort; // eslint-disable-line no-process-env
+  let port;
+  try {
+    // eslint-disable-next-line no-process-env, require-atomic-updates
+    port = parseInt(process.env.PORT, 10);
+  } catch {
+    // ignore
+  }
+  if (!port || isNaN(port) || !isFinite(port) || port <= 0 || port !== Math.floor(port)) {
+    port = DEFAULT_PORT;
+  }
 
   const cb = await server(mode, process.env); // eslint-disable-line no-process-env
 

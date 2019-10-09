@@ -1,3 +1,16 @@
+<script>
+import { mapGetters, mapState } from 'vuex/dist/vuex.esm';
+
+export default {
+  computed: {
+    ...mapState('auth', ['capabilities', 'displayName', 'email', 'name', 'pictureUrl', 'sub']),
+    ...mapGetters('auth', [
+      'authenticated', 'authorized', 'friendlyName', 'isAdmin', 'isGm', 'isUser',
+    ]),
+  },
+};
+</script>
+
 <template>
   <b-card class="narrow mx-auto mb-3" header="Current User Info" header-tag="h1"
     header-class="brand-font" border-variant="info"
@@ -23,19 +36,6 @@
     </b-card-text>
   </b-card>
 </template>
-
-<script>
-import { mapGetters, mapState } from 'vuex/dist/vuex.esm';
-
-export default {
-  computed: {
-    ...mapState('auth', ['capabilities', 'displayName', 'email', 'name', 'pictureUrl', 'sub']),
-    ...mapGetters('auth', [
-      'authenticated', 'authorized', 'friendlyName', 'isAdmin', 'isGm', 'isUser',
-    ]),
-  },
-};
-</script>
 
 <style scoped>
 .narrow { max-width: var(--breakpoint-sm); }

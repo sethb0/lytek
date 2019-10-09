@@ -2,6 +2,9 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 import auth from '@/auth/router';
+// import characters from '@/characters/router';
+import charms from '@/charms/router';
+// import chronicles from '@/chronicles/router';
 
 import Home from '@/toplevel/home.vue';
 import NotFound from '@/toplevel/not-found.vue';
@@ -27,18 +30,9 @@ const router = new Router({
       meta: { 'public': true, title: `About ${TITLE}` },
     },
     ...auth,
-    {
-      path: '/profile',
-      name: 'profile',
-      component: () => import(/* webpackChunkName: "dump" */ '@/dummy.vue'),
-      meta: { title: 'profile' },
-    },
-    {
-      path: '/admin',
-      name: 'admin',
-      component: () => import(/* webpackChunkName: "dump" */ '@/dummy.vue'),
-      meta: { title: 'admin' },
-    },
+    // ...characters,
+    ...charms,
+    // ...chronicles,
     {
       path: '*',
       component: NotFound,

@@ -1,16 +1,3 @@
-<template>
-  <b-nav-item-dropdown :text="text">
-    <b-dropdown-item v-if="!disableNew" :to="{ name: newRoute }">New…</b-dropdown-item>
-    <b-dropdown-item :to="{ name: listRoute }">List All</b-dropdown-item>
-    <b-dropdown-divider v-if="items.length"></b-dropdown-divider>
-    <b-dropdown-item v-for="x of items" :key="x.id"
-      :to="{ name: detailRoute, params: { id: x.id } }"
-    >
-      {{ x[field] }}
-    </b-dropdown-item>
-  </b-nav-item-dropdown>
-</template>
-
 <script>
 export default {
   props: {
@@ -45,3 +32,16 @@ export default {
   },
 };
 </script>
+
+<template>
+  <b-nav-item-dropdown :text="text">
+    <b-dropdown-item v-if="!disableNew" :to="{ name: newRoute }">New…</b-dropdown-item>
+    <b-dropdown-item :to="{ name: listRoute }">List All</b-dropdown-item>
+    <b-dropdown-divider v-if="items.length"></b-dropdown-divider>
+    <b-dropdown-item v-for="x of items" :key="x.id"
+      :to="{ name: detailRoute, params: { id: x.id } }"
+    >
+      {{ x[field] }}
+    </b-dropdown-item>
+  </b-nav-item-dropdown>
+</template>

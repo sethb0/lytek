@@ -42,6 +42,7 @@ rules:
     svg: always
     math: always
   vue/max-attributes-per-line: off
+  vue/no-unused-components: warn
   vue/return-in-computed-property: warn
   vue/singleline-html-element-content-newline: off
 

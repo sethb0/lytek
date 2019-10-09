@@ -16,16 +16,32 @@ import store from '@/store';
 
 fontAwesomeConfig.autoAddCss = false;
 
-const auth = new AuthService();
+const authService = new AuthService();
 
 Vue.use(BootstrapVue);
 
 new Vue({
-  data () {
-    return { auth };
-  },
+  data: { authService, toaster: 'b-toaster-top-center' },
   router,
   store,
+  async created () {
+    if (!this.$route.meta?.auth) {
+      try {
+        if (await this.authService.isAuthenticated()) {
+          await this.$store.dispatch('auth/setInProgress', true);
+          const userData = await this.authService.getUserData();
+          if (userData) {
+            await this.$store.dispatch('auth/setUser', userData);
+          }
+          this.$store.dispatch('auth/setInProgress', false);
+        }
+      } catch (err) {
+        this.authToast(err, 'Unable to restore user info', 'warning');
+      } finally {
+        this.$store.dispatch('auth/setInitialized', true);
+      }
+    }
+  },
   methods: {
     authToast (msg, title = 'Sign-in problem', variant = 'danger') {
       if (msg.message) {
@@ -33,9 +49,22 @@ new Vue({
       }
       this.$store.dispatch('auth/setInProgress', false);
       this.$nextTick(() => {
-        this.$bvToast.toast(msg, { title, variant, keepalive: true });
+        this.$bvToast.toast(msg, {
+          title,
+          variant,
+          toaster: this.toaster,
+          keepalive: true,
+        });
       });
     },
   },
   render: (h) => h(App),
+  provide () {
+    return {
+      authService: this.authService,
+      authToast: ::this.authToast,
+      getAccessToken: ::this.authService.getAccessToken,
+      toaster: this.toaster,
+    };
+  },
 }).$mount('#app');

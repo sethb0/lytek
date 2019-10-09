@@ -1,23 +1,24 @@
 /* eslint camelcase: off */
 import createAuth0Client from '@auth0/auth0-spa-js';
 
+const AUDIENCE = 'https://lytek.sharpcla.ws';
 const CLIENT_ID = 'qKmlCFgdNi02xeV33lvtMWJ3H1cLFIgV';
-
+const REDIRECT_URI = `${window.location.origin}/auth/callback`;
 export class AuthService {
   constructor () {
     this.auth0 = createAuth0Client({
-      audience: 'https://lytek.sharpcla.ws',
+      audience: AUDIENCE,
       client_id: CLIENT_ID,
       connection: 'Discord',
       domain: 'mfllc.auth0.com',
       leeway: 5,
       max_age: 7 * 24 * 60 * 60,
-      redirect_uri: `${window.location.origin}/auth/callback`,
+      redirect_uri: REDIRECT_URI,
     });
   }
 
-  async getAccessToken (scope) {
-    return (await this.auth0).getTokenSilently({ scope });
+  async getAccessToken (scope, audience = AUDIENCE) {
+    return (await this.auth0).getTokenSilently({ audience, scope });
   }
 
   async getUserData () {
@@ -26,18 +27,18 @@ export class AuthService {
 
   async handleCallback () {
     const { appState } = await (await this.auth0).handleRedirectCallback();
-    const { route } = appState || {};
-    return route || '/';
+    if (!appState.route) {
+      appState.route = '/';
+    }
+    return appState;
   }
 
   async isAuthenticated () {
     return (await this.auth0).isAuthenticated();
   }
 
-  async login (route) {
-    return (await this.auth0).loginWithRedirect({
-      appState: { route },
-    });
+  async login (appState) {
+    return (await this.auth0).loginWithRedirect({ appState });
   }
 
   async logout () {
