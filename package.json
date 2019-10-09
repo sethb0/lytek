@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "private": true,
   "author": "Rook <rook@sharpcla.ws>",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sethb0/lytek.git"
