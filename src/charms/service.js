@@ -15,28 +15,6 @@ export class CharmsService {
 
   async getTypes () {
     return Object.keys(await this._readCache());
-    // .sort((a, b) => {
-    //   const aExalt = EXALT_ORDER.indexOf(a);
-    //   const bExalt = EXALT_ORDER.indexOf(b);
-    //   if (aExalt >= 0 && bExalt >= 0) {
-    //     return aExalt - bExalt;
-    //   }
-    //   if (aExalt >= 0 || bExalt >= 0) {
-    //     return -(aExalt - bExalt);
-    //   }
-    //   const aMA = MA_ORDER.indexOf(a);
-    //   const bMA = MA_ORDER.indexOf(b);
-    //   if (aMA >= 0 || bMA >= 0) {
-    //     return aMA - bMA;
-    //   }
-    //   if (a < b) {
-    //     return -1;
-    //   }
-    //   if (a > b) {
-    //     return 1;
-    //   }
-    //   return 0;
-    // });
   }
 
   async getGroups (type) {

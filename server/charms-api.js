@@ -1,3 +1,5 @@
+import { unKebab } from './utils';
+
 class ParameterError extends Error {}
 
 export const charmTypes = wrap(async (ctx) => {
@@ -137,7 +139,7 @@ function getLoaderOptionsSetWithProxiesAndGenerics (params) {
 function getCharmDataLoader ({ type, group, proxies }) {
   const groupFilter = group || { $exists: 0 };
   const filter = proxies
-    ? { 'for.exalt': type, 'for.group': groupFilter }
+    ? { 'for.exalt': unKebab(type), 'for.group': groupFilter }
     : { group: groupFilter };
   return (mongo) => mongo.collection(proxies ? 'proxies' : type)
     .find(filter, { projection: { _id: 0 } })
