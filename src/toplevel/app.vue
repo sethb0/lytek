@@ -24,12 +24,12 @@ export default {
 </script>
 
 <template>
-  <div id="app" role="application">
+  <div id="app" role="application" class="app-root-container">
     <template v-if="initialized">
-      <mf-navbar v-if="!authRoute"></mf-navbar>
-      <router-view v-if="showRouterView">
+      <mf-navbar v-if="!authRoute" class="app-navbar"></mf-navbar>
+      <router-view v-if="showRouterView" class="app-main-view">
       </router-view>
-      <mf-private v-else></mf-private>
+      <mf-private v-else class="app-main-view"></mf-private>
     </template>
     <mf-loading v-else></mf-loading>
   </div>
@@ -38,4 +38,15 @@ export default {
 <style>
 a.disabled { pointer-events: none; }
 div.fake-hr { height: 3px; }
+
+:root {
+  --navbar-height: 3rem;
+  --body-margin: calc(var(--navbar-height) + var(--spacer) * 2);
+  --main-height: calc(100vh - var(--body-margin));
+}
+.app-navbar { height: var(--navbar-height); }
+.app-main-view {
+  height: var(--main-height);
+  margin-top: var(--body-margin);
+}
 </style>

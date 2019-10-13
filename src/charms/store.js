@@ -7,8 +7,19 @@ export default {
     selectedCharm: '',
     selectedGroup: '',
     selectedType: '',
-    initialized: false,
+    displayedCharm: '',
+    displayedGroup: '',
+    displayedType: '',
     loading: false,
+    title: '',
+    gvTopdown: false,
+    gvPack: false,
+  },
+  getters: {
+    valid (state) {
+      return state.types.includes(state.selectedType)
+        && state.groups.includes(state.selectedGroup);
+    },
   },
   mutations: {
     charms (state, value) {
@@ -53,9 +64,6 @@ export default {
       if (typeof value !== 'string') {
         throw new TypeError('Invalid value in mutation charms/selectedCharm');
       }
-      if (!state.charms.some((x) => x.id === value)) {
-        throw new Error('Cannot find match for value in mutation charms/selectedCharm');
-      }
       state.selectedCharm = value;
     },
     selectedGroup (state, value) {
@@ -65,9 +73,6 @@ export default {
       }
       if (typeof value !== 'string') {
         throw new TypeError('Invalid value in mutation charms/selectedGroup');
-      }
-      if (!state.groups.includes(value)) {
-        throw new Error('Cannot find match for value in mutation charms/selectedGroup');
       }
       state.selectedGroup = value;
     },
@@ -79,10 +84,37 @@ export default {
       if (typeof value !== 'string') {
         throw new TypeError('Invalid value in mutation charms/selectedType');
       }
-      if (!state.types.includes(value)) {
-        throw new Error('Cannot find match for value in mutation charms/selectedType');
-      }
       state.selectedType = value;
+    },
+    displayedCharm (state, value) {
+      if (!value) {
+        state.displayedCharm = '';
+        return;
+      }
+      if (typeof value !== 'string') {
+        throw new TypeError('Invalid value in mutation charms/displayedCharm');
+      }
+      state.displayedCharm = value;
+    },
+    displayedGroup (state, value) {
+      if (!value) {
+        state.displayedGroup = '';
+        return;
+      }
+      if (typeof value !== 'string') {
+        throw new TypeError('Invalid value in mutation charms/displayedGroup');
+      }
+      state.displayedGroup = value;
+    },
+    displayedType (state, value) {
+      if (!value) {
+        state.displayedType = '';
+        return;
+      }
+      if (typeof value !== 'string') {
+        throw new TypeError('Invalid value in mutation charms/displayedType');
+      }
+      state.displayedType = value;
     },
     loading (state, value) {
       if (!value) {
@@ -94,14 +126,35 @@ export default {
       }
       state.loading = value;
     },
-    initialized (state, value) {
+    title (state, value) {
       if (!value) {
-        throw new Error('Cannot mutate charms/initialized to falsy value');
+        state.title = '';
+        return;
+      }
+      if (typeof value !== 'string') {
+        throw new TypeError('Invalid value in mutate charms/title');
+      }
+      state.title = value;
+    },
+    gvTopdown (state, value) {
+      if (!value) {
+        state.gvTopdown = false;
+        return;
       }
       if (typeof value !== 'boolean') {
-        throw new TypeError('Invalid value in mutation charms/initialized');
+        throw new TypeError('Invalid value in mutation charms/gvTopdown');
       }
-      state.initialized = value;
+      state.gvTopdown = value;
+    },
+    gvPack (state, value) {
+      if (!value) {
+        state.gvPack = false;
+        return;
+      }
+      if (typeof value !== 'boolean') {
+        throw new TypeError('Invalid value in mutation charms/gvPack');
+      }
+      state.gvPack = true;
     },
   },
   actions: {
@@ -123,11 +176,26 @@ export default {
     async setSelectedType ({ commit }, payload) {
       commit('selectedType', payload);
     },
+    async setDisplayedCharm ({ commit }, payload) {
+      commit('displayedCharm', payload);
+    },
+    async setDisplayedGroup ({ commit }, payload) {
+      commit('displayedGroup', payload);
+    },
+    async setDisplayedType ({ commit }, payload) {
+      commit('displayedType', payload);
+    },
     async setLoading ({ commit }, payload) {
       commit('loading', payload);
     },
-    async setInitialized ({ commit }, payload) {
-      commit('initialized', payload);
+    async setTitle ({ commit }, payload) {
+      commit('title', payload);
+    },
+    async setGvTopdown ({ commit }, payload) {
+      commit('gvTopdown', payload);
+    },
+    async setGvPack ({ commit }, payload) {
+      commit('gvPack', payload);
     },
   },
 };

@@ -63,7 +63,6 @@ new Vue({
     return {
       authService: this.authService,
       authToast: ::this.authToast,
-      getAccessToken: ::this.authService.getAccessToken,
       toaster: this.toaster,
     };
   },

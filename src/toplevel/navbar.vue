@@ -18,11 +18,11 @@ export default {
     ...mapState('auth', ['pictureUrl']),
     ...mapGetters('auth', [
       'authenticated',
-      'authorized',
+      // 'authorized',
       'friendlyName',
       'isAdmin',
       // 'isGm',
-      // 'isUser',
+      'isUser',
     ]),
   },
   methods: {
@@ -34,16 +34,16 @@ export default {
 </script>
 
 <template>
-  <b-navbar toggleable="md" variant="secondary" type="dark" class="d-print-none mb-1">
+  <b-navbar fixed="top" toggleable="md" variant="secondary" type="dark" class="d-print-none">
     <b-navbar-brand :to="{ name: 'home' }" exact class="brand-font">
       Lytek
     </b-navbar-brand>
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
     <b-collapse id="nav-collapse" is-nav>
-      <b-navbar-nav v-if="authorized">
+      <b-navbar-nav v-if="isUser">
         <b-nav-item-dropdown text="Charms" class="ml-md-3 pb-1">
           <b-dropdown-item :to="{ name: 'charmBrowser' }">Browse</b-dropdown-item>
-          <!-- <b-dropdown-item :to="{ name: 'charmTrees' }">Tree View</b-dropdown-item> -->
+          <b-dropdown-item :to="{ name: 'charmTrees' }">Tree View</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
 

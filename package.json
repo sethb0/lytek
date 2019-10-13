@@ -43,7 +43,6 @@
     "koa-jwt": "^3.6.0",
     "koa-simple-router": "^0.2.0",
     "mongodb": "^3.3.2",
-    "pg-promise": "^9.3.3",
     "resolve-path": "^1.4.0",
     "spex": "^3.0.0",
     "uuid": "^3.3.3",

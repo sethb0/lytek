@@ -1,5 +1,5 @@
 :root {
-  --inspector-font-size: 11pt;
-  --inspector-background-color: floralwhite;
-  --inspector-text-color: #6b4423; /* kobicha */
+  --spacer: #{$spacer / 4};
+
+  --named-color-kobicha: #6b4423;
 }

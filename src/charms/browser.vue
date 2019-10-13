@@ -15,12 +15,19 @@ export default {
   <div>
     <mf-toolbar class="d-print-none my-1"></mf-toolbar>
     <div class="d-flex flex-column-reverse flex-md-row justify-content-center">
-      <mf-selector class="charm-selector d-print-none">
-      </mf-selector>
-      <mf-inspector :id="selectedCharm"
-        class="flex-md-grow-1 mb-2 mb-md-0 mx-auto ml-md-1 mr-md-0"
-      >
+      <mf-selector class="d-print-none"></mf-selector>
+      <mf-inspector :id="selectedCharm" class="inspector mb-2 mb-md-0 mx-auto ml-md-1 mr-md-0">
       </mf-inspector>
     </div>
   </div>
 </template>
+
+<style scoped>
+@media screen and (min-width: 768px) {
+  .inspector {
+    height: var(--inspector-height);
+    overflow-y: auto;
+    overscroll-behavior: constrain;
+  }
+}
+</style>

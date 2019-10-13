@@ -27,7 +27,7 @@ export default {
 </script>
 
 <template>
-  <div>
+  <div class="charm-selector">
     <b-list-group v-if="charms.length">
       <b-list-group-item v-for="c in charms" :key="c.id" href="#"
         :class="{ active: selectedCharm === c.id }" @click.prevent="selectCharm(c.id)"
@@ -42,3 +42,9 @@ export default {
     </b-list-group>
   </div>
 </template>
+
+<style scoped>
+.charm-selector {
+  min-width: 12rem;
+}
+</style>

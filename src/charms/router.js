@@ -6,26 +6,20 @@ export default [
     children: [
       {
         path: '',
-        redirect: { name: 'charmBrowser' },
+        redirect: { name: 'charmTrees' },
       },
       {
         name: 'charmBrowser',
-        path: 'browse',
+        path: 'browse/:charm?',
         component: () => import(/* webpackChunkName: "charms" */ '@/charms/browser.vue'),
+        meta: { title: 'Charm Browser' },
       },
-      // {
-      //   name: 'charmTrees',
-      //   path: 'trees/:type?/:group?',
-      //   props: true,
-      //   component: () => import(/* webpackChunkName: "charms" */ '@/charms/tree-viewer.vue'),
-      // },
-      // {
-      //   name: 'charmInspector',
-      //   path: 'inspect/:id',
-      //   props: true,
-      //   component:
-      //     () => import(/* webpackChunkName: "charms" */ '@/charms/wrap-inspector.vue'),
-      // },
+      {
+        name: 'charmTrees',
+        path: 'trees',
+        component: () => import(/* webpackChunkName: "charms" */ '@/charms/tree-viewer.vue'),
+        meta: { title: 'Tree Browser' },
+      },
     ],
   },
 ];

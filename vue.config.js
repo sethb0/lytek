@@ -1,3 +1,5 @@
+const RENDER_REGEXP = /\.render\.js$/u;
+
 const production = process.env.NODE_ENV === 'production';
 
 module.exports = {
@@ -19,6 +21,7 @@ module.exports = {
         'vue-router$': 'vue-router/dist/vue-router.esm.js',
         vuex$: 'vuex/dist/vuex.esm.js',
       });
+
     config
       .module
       .rule('vue')
@@ -40,6 +43,21 @@ module.exports = {
         };
         return options;
       });
+
+    config
+      .module
+      .rule('js')
+      .exclude
+      .add(RENDER_REGEXP);
+
+    config
+      .module
+      .rule('render')
+      .test(RENDER_REGEXP)
+      .use('file-loader')
+      .loader('file-loader')
+      .options({ name: '[name].[contenthash:8].[ext]', outputPath: 'assets/js' });
+
     if (production) {
       config
         .optimization

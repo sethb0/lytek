@@ -22,7 +22,7 @@ export default {
         and sign in again with an appropriately authorized account.
       </span>
       <span v-else>
-        <b-link :to="{ name: 'login', query: { next: $route.fullPath } }">
+        <b-link :to="{ name: 'login' }">
           sign in <fa-i :icon="faSignIn"></fa-i>
         </b-link>.
       </span>

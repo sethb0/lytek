@@ -11,7 +11,7 @@ import NotFound from '@/toplevel/not-found.vue';
 
 Vue.use(Router);
 
-const TITLE = 'Lytek';
+export const TITLE = 'Lytek';
 
 const router = new Router({
   mode: 'history',
@@ -43,7 +43,7 @@ const router = new Router({
 
 router.afterEach((to) => {
   let title = TITLE;
-  for (const route of Array.from(to.matched).reverse()) {
+  for (const route of to.matched.slice().reverse()) {
     if (route.meta?.title) {
       title = `${route.meta.title} | ${TITLE}`;
       break;

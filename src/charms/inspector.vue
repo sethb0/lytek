@@ -122,31 +122,34 @@ function reformatLineBreaks (description) {
 </script>
 
 <template>
-  <div class="inspector-body">
+  <div class="body">
+    <div class="vstrut"></div>
     <!-- eslint-disable-next-line vue/no-v-html -->
-    <div class="markdown-body px-4 py-3" v-html="html"></div>
+    <div class="markdown" v-html="html"></div>
   </div>
 </template>
 
 <style scoped>
+.body {
+  font-size: 1.1rem;
+  min-width: var(--inspector-min-width);
+  max-width: var(--inspector-max-width);
+}
+
+.markdown {
+  padding: calc(3 * var(--spacer)) calc(4 * var(--spacer));
+}
+
 @media screen {
-  .inspector-body {
+  .body {
     background-color: var(--inspector-background-color);
-    min-width: 20rem;
-  }
-
-  .markdown-body {
     color: var(--inspector-text-color);
-    overflow-y: scroll;
-    overscroll-behavior: contain;
   }
 }
 
-.inspector-body {
-  max-width: 40rem;
-}
-
-.markdown-body {
-  font-size: var(--inspector-font-size);
+@media screen and (min-width: 768px) {
+  .vstrut {
+    width: var(--inspector-min-width);
+  }
 }
 </style>
