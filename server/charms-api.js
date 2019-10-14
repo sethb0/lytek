@@ -167,7 +167,7 @@ function rewriteGenerics (charms, { type, group }) {
       return ch;
     }
     if (
-      (type === 'lunar' && group === 'Occult')
+      (type === 'lunar' && (group === 'Martial Arts' || group === 'Occult'))
       || (charm.id === 'Infernal.2ndExcellency' && g === 'EbonDragon')
       || (
         charm.id === 'Abyssal.RaveningMouthOf'
