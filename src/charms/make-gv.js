@@ -386,20 +386,19 @@ class Builder {
     }
     const minEssence = p.essence || 1;
     let keyTrait = charm.group || '_';
-    if (charm.exalt?.endsWith(' Martial Arts') && keyTrait !== 'Dexterity') {
-      keyTrait = 'Martial Arts';
+    if (charm.exalt?.endsWith(' Martial Arts')) {
+      keyTrait = keyTrait === 'Lunar Hero Style' ? 'Dexterity' : 'Martial Arts';
     }
     const minTrait = p.traits && p.traits[keyTrait];
     if (minEssence || minTrait) {
       const t = minTrait ? `${minTrait}/` : '';
-      name = `${name} [${t}${minEssence || ''}]`;
+      name = `${name} [${t}${minEssence}]`;
     }
     return name;
   }
 }
 
-export function makeGv (charms, select, options) {
-  options ||= {};
+export function makeGv (charms, select, options = {}) {
   options.character ||= [];
   const builder = new Builder(charms, select, options);
   builder.doNodes();
