@@ -1,7 +1,7 @@
 {
   "name": "lytek",
   "description": "Web utilities for Exalted 2.5e",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "private": true,
   "author": "Rook <rook@sharpcla.ws>",
   "license": "MIT",
