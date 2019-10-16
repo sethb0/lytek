@@ -155,6 +155,17 @@ function rewriteGenerics (charms, { type, group }) {
     if (g.includes(' ')) {
       g = g.replace(/ (\S?)/gu, (match, p1) => p1.toUpperCase());
     }
+    if (
+      group === 'Heretical'
+      || (type === 'lunar' && (group === 'Martial Arts' || group === 'Occult'))
+      || (charm.id === 'Infernal.2ndExcellency' && g === 'EbonDragon')
+      || (
+        charm.id === 'Abyssal.RaveningMouthOf'
+        && !['Archery', 'MartialArts', 'Melee', 'Thrown'].includes(g)
+      )
+    ) {
+      return null;
+    }
     if (charm.variants) {
       const variant = charm.variants.find((v) => v.id === g);
       let { description } = charm;
@@ -165,16 +176,6 @@ function rewriteGenerics (charms, { type, group }) {
       const ch = { ...charm, name: renameCharm(charm, group), description };
       delete ch.variants;
       return ch;
-    }
-    if (
-      (type === 'lunar' && (group === 'Martial Arts' || group === 'Occult'))
-      || (charm.id === 'Infernal.2ndExcellency' && g === 'EbonDragon')
-      || (
-        charm.id === 'Abyssal.RaveningMouthOf'
-        && !['Archery', 'MartialArts', 'Melee', 'Thrown'].includes(g)
-      )
-    ) {
-      return null;
     }
     return { ...charm, name: renameCharm(charm, group) };
   }).filter(identity);
