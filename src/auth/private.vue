@@ -12,7 +12,7 @@ export default {
 </script>
 
 <template>
-  <b-card title="Authorized users only" variant="warning" class="mx-sm-5 my-3">
+  <b-card title="Authorized users only" variant="warning" class="mx-sm-5 mb-3">
     <b-card-text>
       You are attempting to access a page that is restricted to authorized users. Please
       <span v-if="authenticated">
