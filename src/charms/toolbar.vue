@@ -5,12 +5,20 @@ import { mapState } from 'vuex';
 
 import { unKebab } from '@/utils';
 
+const ATTRIBUTES_REV = [
+  'Wits', 'Intelligence', 'Perception',
+  'Appearance', 'Manipulation', 'Charisma',
+  'Stamina', 'Dexterity', 'Strength',
+];
 const EXALT_TYPES_REV
   = ['alchemical', 'infernal', 'abyssal', 'sidereal', 'lunar', 'dragon-blooded', 'solar'];
 const MA_TYPES_REV
   = ['sidereal-martial-arts', 'celestial-martial-arts', 'terrestrial-martial-arts'];
 const JADEBORN_GROUPS_REV
   = ['Chaos', 'Artisan', 'Enlightened', 'Warrior', 'Worker', 'Foundation'];
+
+const sortJadebornGroups = makeGroupSorter(JADEBORN_GROUPS_REV);
+const sortAttributes = makeGroupSorter(ATTRIBUTES_REV);
 
 export default {
   inject: ['reloadCharms'],
@@ -81,9 +89,16 @@ export default {
         return this.groups
           .slice()
           .sort(sortJadebornGroups);
-        // Not going to just return a JADEBORN_GROUPS constant because I might add
-        // other Patterns and I'd prefer not to have to come in here every time.
+        // Not going to just return a JADEBORN_GROUPS constant because I might add other
+        // Patterns and I'd prefer not to have to come in here every time.
         // Eh, it's an excuse.
+      }
+      if (this.selectedType === 'lunar') {
+        return this.groups
+          .slice()
+          .sort(sortAttributes);
+        // This accommodates Martial Arts, Occult, and any other widgets that may end up
+        // alongside the attributes in the Lunar Charm set.
       }
       return this.groups;
     },
@@ -110,19 +125,21 @@ function sortTypes (a, b) {
   return 0;
 }
 
-function sortJadebornGroups (a, b) {
-  const aGroup = JADEBORN_GROUPS_REV.indexOf(a);
-  const bGroup = JADEBORN_GROUPS_REV.indexOf(b);
-  if (aGroup >= 0 || bGroup >= 0) {
-    return bGroup - aGroup;
-  }
-  if (a < b) {
-    return -1;
-  }
-  if (a > b) {
-    return 1;
-  }
-  return 0;
+function makeGroupSorter (revGroups) {
+  return (a, b) => {
+    const aGroup = revGroups.indexOf(a);
+    const bGroup = revGroups.indexOf(b);
+    if (aGroup >= 0 || bGroup >= 0) {
+      return bGroup - aGroup;
+    }
+    if (a < b) {
+      return -1;
+    }
+    if (a > b) {
+      return 1;
+    }
+    return 0;
+  };
 }
 </script>
 
