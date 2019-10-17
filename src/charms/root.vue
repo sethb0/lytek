@@ -178,6 +178,7 @@ export default {
 <style>
 :root {
   --toolbar-height: 2.5rem;
+  --titlebar-height: 1.75rem;
   --inspector-height: calc(var(--main-height) - var(--toolbar-height) - 2 * var(--spacer));
   --inspector-min-width: 25rem;
   --inspector-max-width: 50rem;

@@ -11,7 +11,6 @@ export default {
     displayedGroup: '',
     displayedType: '',
     loading: false,
-    title: '',
     gvTopdown: false,
     gvPack: false,
   },
@@ -126,16 +125,6 @@ export default {
       }
       state.loading = value;
     },
-    title (state, value) {
-      if (!value) {
-        state.title = '';
-        return;
-      }
-      if (typeof value !== 'string') {
-        throw new TypeError('Invalid value in mutate charms/title');
-      }
-      state.title = value;
-    },
     gvTopdown (state, value) {
       if (!value) {
         state.gvTopdown = false;
@@ -187,9 +176,6 @@ export default {
     },
     async setLoading ({ commit }, payload) {
       commit('loading', payload);
-    },
-    async setTitle ({ commit }, payload) {
-      commit('title', payload);
     },
     async setGvTopdown ({ commit }, payload) {
       commit('gvTopdown', payload);

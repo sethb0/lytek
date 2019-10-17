@@ -35,7 +35,7 @@ export default {
 
 <template>
   <b-navbar fixed="top" toggleable="md" variant="secondary" type="dark" class="d-print-none">
-    <b-navbar-brand :to="{ name: 'home' }" exact class="brand-font">
+    <b-navbar-brand :to="{ name: 'home' }" exact class="brand-font force-brand-font-color">
       Lytek
     </b-navbar-brand>
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -82,6 +82,10 @@ export default {
 </template>
 
 <style scoped>
+.force-brand-font-color {
+  color: var(--brand-font-color) !important;
+}
+
 .userpic {
   max-width: 1.5rem;
   max-height: 1.5rem;

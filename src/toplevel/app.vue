@@ -39,12 +39,23 @@ export default {
 a.disabled { pointer-events: none; }
 div.fake-hr { height: 3px; }
 
+.brand-font {
+  color: var(--brand-font-color);
+  font-family: var(--brand-font-family);
+  font-style: normal;
+  font-weight: normal;
+}
+
 :root {
   --navbar-height: 3rem;
   --body-margin: calc(var(--navbar-height) + var(--spacer) * 2);
   --main-height: calc(100vh - var(--body-margin));
 }
-.app-navbar { height: var(--navbar-height); }
+
+.app-navbar {
+  min-height: var(--navbar-height);
+}
+
 .app-main-view {
   height: var(--main-height);
   margin-top: var(--body-margin);

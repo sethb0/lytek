@@ -104,16 +104,19 @@ export default {
         }
         svgHolder.appendChild(svgElement);
         this.renderedType = type;
-        this.$store.dispatch('charms/setTitle', title);
+        this.$emit('rendered', { type, group, title });
       });
     },
     async onSvgClick (evt) {
+      evt.preventDefault();
       try {
         let element = evt.target;
         while (!element.id || element.id.startsWith('a_')) {
           element = element.parentElement;
         }
-        await this.$store.dispatch('charms/setSelectedCharm', element.id);
+        this.$nextTick(() => {
+          this.$emit('click', { id: element.id });
+        });
       } catch (err) {
         console.error(err);
       }
@@ -137,6 +140,7 @@ function postprocess (svgElement, handler) {
     }
   }
   for (const el of svgElement.querySelectorAll('g.node a, g.cluster a')) {
+    el.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#');
     el.onclick = handler;
   }
 }

@@ -169,7 +169,7 @@ function makeGroupSorter (revGroups) {
         </template>
       </b-form-select>
     </b-input-group>
-    <b-input-group prepend="Group:" size="sm" class="group-selector mx-2 pt-md-1 pb-1">
+    <b-input-group prepend="Group:" size="sm" class="group-selector mx-2 py-1">
       <b-form-select v-model="selectedGroup" :disabled="loading" :options="groupOptions">
         <template #first>
           <option value="" disabled>(select one)</option>
@@ -181,7 +181,7 @@ function makeGroupSorter (revGroups) {
 
 <style scoped>
 .charm-toolbar {
-  height: calc(2 * var(--toolbar-height));
+  max-height: calc(2 * var(--toolbar-height));
 }
 
 .switchbox {
@@ -199,7 +199,7 @@ function makeGroupSorter (revGroups) {
 
 @media screen and (min-width: 768px) {
   .charm-toolbar {
-    height: var(--toolbar-height);
+    max-height: var(--toolbar-height);
   }
 }
 </style>

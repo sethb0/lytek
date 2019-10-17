@@ -1,13 +1,18 @@
 <script>
-import { mapState } from 'vuex';
-
 import MfInspector from '@/charms/inspector.vue';
 import MfSelector from '@/charms/selector.vue';
 import MfToolbar from '@/charms/toolbar.vue';
 
 export default {
   components: { MfInspector, MfSelector, MfToolbar },
-  computed: mapState('charms', ['selectedCharm']),
+  data () {
+    return { selectedCharm: '' };
+  },
+  methods: {
+    selectCharm ({ id }) {
+      this.selectedCharm = id;
+    },
+  },
 };
 </script>
 
@@ -15,17 +20,32 @@ export default {
   <div>
     <mf-toolbar class="d-print-none my-1"></mf-toolbar>
     <div class="d-flex flex-column-reverse flex-md-row justify-content-center">
-      <mf-selector class="d-print-none"></mf-selector>
-      <mf-inspector :id="selectedCharm" class="inspector mb-2 mb-md-0 mx-auto ml-md-1 mr-md-0">
-      </mf-inspector>
+      <mf-selector class="selector d-print-none" @click="selectCharm"></mf-selector>
+      <mf-inspector :charm-id="selectedCharm" class="inspector"></mf-inspector>
     </div>
   </div>
 </template>
 
 <style scoped>
+.inspector {
+  margin: 0px auto calc(2 * var(--spacer));
+}
+
+@media screen {
+  .selector {
+    height: var(--inspector-height);
+    overflow-y: auto;
+  }
+}
+
 @media screen and (min-width: 768px) {
+  .selector {
+    overscroll-behavior: contain;
+  }
+
   .inspector {
     height: var(--inspector-height);
+    margin: 0px 0px 0px var(--spacer);
     overflow-y: auto;
     overscroll-behavior: constrain;
   }

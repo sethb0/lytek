@@ -2,25 +2,32 @@
 import { mapState } from 'vuex';
 
 export default {
+  data () {
+    return { selectedCharm: '' };
+  },
   computed: {
-    ...mapState('charms', ['charms', 'selectedCharm']),
+    ...mapState('charms', ['charms']),
+    sortedCharms () {
+      const c = this.charms;
+      c.sort((a, b) => {
+        if (a.name < b.name) {
+          return -1;
+        }
+        if (a.name > b.name) {
+          return 1;
+        }
+        return 0;
+      });
+      return c;
+    },
   },
   methods: {
     async selectCharm (charmId) {
       if (this.selectedCharm === charmId) {
         return;
       }
-      try {
-        await this.$store.dispatch('charms/setSelectedCharm', charmId);
-      } catch (err) {
-        this.$nextTick(() => {
-          this.$bvToast.toast(err.message, {
-            title: 'Failed to set selected Charm',
-            variant: 'danger',
-            toaster: 'b-toaster-top-center',
-          });
-        });
-      }
+      this.selectedCharm = charmId;
+      this.$emit('click', { id: charmId });
     },
   },
 };
@@ -29,14 +36,14 @@ export default {
 <template>
   <div class="charm-selector">
     <b-list-group v-if="charms.length">
-      <b-list-group-item v-for="c in charms" :key="c.id" href="#"
+      <b-list-group-item v-for="c in sortedCharms" :key="c.id" href="#"
         :class="{ active: selectedCharm === c.id }" @click.prevent="selectCharm(c.id)"
       >
         {{ c.name }}
       </b-list-group-item>
     </b-list-group>
     <b-list-group v-else>
-      <b-list-group-item>
+      <b-list-group-item disabled>
         Select a type and group from the toolbar to display a list of Charms.
       </b-list-group-item>
     </b-list-group>

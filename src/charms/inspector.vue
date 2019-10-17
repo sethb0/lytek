@@ -10,7 +10,7 @@ const markdownProcessor = new Markdown({ breaks: true })
 
 export default {
   props: {
-    id: {
+    charmId: {
       type: String,
       'default': '',
       validator: (x) => !x || CHARM_ID_REGEXP.test(x),
@@ -29,7 +29,7 @@ export default {
     },
   },
   watch: {
-    id () {
+    charmId () {
       this.updateMarkdown();
     },
     charms () {
@@ -38,8 +38,8 @@ export default {
   },
   methods: {
     updateMarkdown () {
-      if (this.id && this.charms.length) {
-        const [, id, v] = CHARM_ID_REGEXP.exec(this.id);
+      if (this.charmId && this.charms.length) {
+        const [, id, v] = CHARM_ID_REGEXP.exec(this.charmId);
         const charm = this.charms.find((x) => x.id === id);
         if (charm && charm.type !== 'proxy') {
           const variant = v && charm.variants?.find((x) => x.id === v);
@@ -123,7 +123,7 @@ function reformatLineBreaks (description) {
 
 <template>
   <div class="body">
-    <div class="vstrut"></div>
+    <div class="hstrut"></div>
     <!-- eslint-disable-next-line vue/no-v-html -->
     <div class="markdown" v-html="html"></div>
   </div>
@@ -148,7 +148,7 @@ function reformatLineBreaks (description) {
 }
 
 @media screen and (min-width: 768px) {
-  .vstrut {
+  .hstrut {
     width: var(--inspector-min-width);
   }
 }
