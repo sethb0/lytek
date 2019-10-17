@@ -146,7 +146,7 @@ function getCharmDataLoader ({ type, group, proxies }) {
     .toArray();
 }
 
-function rewriteGenerics (charms, { type, group }) {
+function rewriteGenerics (charms, { group }) {
   return charms.map((charm) => {
     if (charm.type !== 'generic') {
       return charm;
