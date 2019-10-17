@@ -18,7 +18,7 @@ export default [
         name: 'charmTrees',
         path: 'trees',
         component: () => import(/* webpackChunkName: "charms" */ '@/charms/tree-viewer.vue'),
-        meta: { title: 'Tree Browser' },
+        meta: { title: 'Charm Tree Viewer' },
       },
     ],
   },
