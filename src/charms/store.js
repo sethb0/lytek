@@ -7,18 +7,9 @@ export default {
     selectedCharm: '',
     selectedGroup: '',
     selectedType: '',
-    displayedCharm: '',
-    displayedGroup: '',
-    displayedType: '',
     loading: false,
     gvTopdown: false,
     gvPack: false,
-  },
-  getters: {
-    valid (state) {
-      return state.types.includes(state.selectedType)
-        && state.groups.includes(state.selectedGroup);
-    },
   },
   mutations: {
     charms (state, value) {
@@ -85,36 +76,6 @@ export default {
       }
       state.selectedType = value;
     },
-    displayedCharm (state, value) {
-      if (!value) {
-        state.displayedCharm = '';
-        return;
-      }
-      if (typeof value !== 'string') {
-        throw new TypeError('Invalid value in mutation charms/displayedCharm');
-      }
-      state.displayedCharm = value;
-    },
-    displayedGroup (state, value) {
-      if (!value) {
-        state.displayedGroup = '';
-        return;
-      }
-      if (typeof value !== 'string') {
-        throw new TypeError('Invalid value in mutation charms/displayedGroup');
-      }
-      state.displayedGroup = value;
-    },
-    displayedType (state, value) {
-      if (!value) {
-        state.displayedType = '';
-        return;
-      }
-      if (typeof value !== 'string') {
-        throw new TypeError('Invalid value in mutation charms/displayedType');
-      }
-      state.displayedType = value;
-    },
     loading (state, value) {
       if (!value) {
         state.loading = false;
@@ -164,15 +125,6 @@ export default {
     },
     async setSelectedType ({ commit }, payload) {
       commit('selectedType', payload);
-    },
-    async setDisplayedCharm ({ commit }, payload) {
-      commit('displayedCharm', payload);
-    },
-    async setDisplayedGroup ({ commit }, payload) {
-      commit('displayedGroup', payload);
-    },
-    async setDisplayedType ({ commit }, payload) {
-      commit('displayedType', payload);
     },
     async setLoading ({ commit }, payload) {
       commit('loading', payload);

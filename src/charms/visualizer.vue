@@ -2,7 +2,7 @@
 /* eslint no-console: off */
 import Viz from 'viz.js/viz.es';
 import vizWorkerFile from 'viz.js/lite.render';
-import { mapGetters, mapState } from 'vuex';
+import { mapState } from 'vuex';
 
 import { getTitle, makeGv } from '@/charms/make-gv';
 
@@ -15,7 +15,6 @@ export default {
   computed: {
     //  ...mapState('characters', ['selectedCharacter']),
     ...mapState('charms', ['charms', 'selectedGroup', 'selectedType', 'gvTopdown', 'gvPack']),
-    ...mapGetters('charms', ['valid']),
   },
   watch: {
     charms () {

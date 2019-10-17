@@ -43,6 +43,7 @@ rules:
     math: always
   vue/max-attributes-per-line: off
   vue/no-unused-components: warn
+  vue/no-unused-vars: warn
   vue/return-in-computed-property: warn
   vue/singleline-html-element-content-newline: off
 
