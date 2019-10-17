@@ -200,8 +200,8 @@ export default {
   --visualizer-cluster-color: navajowhite;
 }
 .celestial-martial-arts {
-  --visualizer-charm-color: lightsteelblue;
-  --visualizer-cluster-color: thistle;
+  --visualizer-charm-color: thistle;
+  --visualizer-cluster-color: lightsteelblue;
 }
 .dragon-blooded, .terrestrial-martial-arts {
   --visualizer-charm-color: indianred;
