@@ -112,7 +112,7 @@ function getCharmDataLoadersAndPostprocessor (params) {
   }
   const omitGenerics
     = ['Heretical', 'Martial Arts', 'Occult'].includes(group)
-      && ['Alchemical', 'Infernal', 'Lunar'].includes(type);
+      && ['alchemical', 'infernal', 'lunar'].includes(type);
   const getLoaderOptionsSet = omitGenerics
     ? getLoaderOptionsSetWithProxies
     : getLoaderOptionsSetWithProxiesAndGenerics;
@@ -156,9 +156,7 @@ function rewriteGenerics (charms, { type, group }) {
       g = g.replace(/ (\S?)/gu, (match, p1) => p1.toUpperCase());
     }
     if (
-      group === 'Heretical'
-      || (type === 'lunar' && (group === 'Martial Arts' || group === 'Occult'))
-      || (charm.id === 'Infernal.2ndExcellency' && g === 'EbonDragon')
+      (charm.id === 'Infernal.2ndExcellency' && g === 'EbonDragon')
       || (
         charm.id === 'Abyssal.RaveningMouthOf'
         && !['Archery', 'MartialArts', 'Melee', 'Thrown'].includes(g)
