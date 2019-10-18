@@ -1,3 +1,4 @@
+/* eslint require-atomic-updates: off */
 import { unKebab } from './utils';
 
 class ParameterError extends Error {}
@@ -194,5 +195,5 @@ function identity (x) {
 }
 
 function discard () {
-  // return undefined;
+  // Return undefined;
 }

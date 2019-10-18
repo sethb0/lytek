@@ -66,7 +66,7 @@ export default {
       }
       console.debug(`GV generation took ${Date.now() - when} ms`);
       if (process.env.NODE_ENV !== 'production') { // eslint-disable-line no-process-env
-        this.gv = gv; // for debugging
+        this.gv = gv; // For debugging
       }
       const when2 = Date.now();
       let svgElement;
@@ -95,7 +95,7 @@ export default {
           return;
         }
         if (process.env.NODE_ENV !== 'production') { // eslint-disable-line no-process-env
-          this.svg = svgElement.outerHTML; // for debugging
+          this.svg = svgElement.outerHTML; // For debugging
         }
         postprocess(svgElement, ::this.onSvgClick);
         if (svgHolder.childElementCount) {

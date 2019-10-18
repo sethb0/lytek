@@ -6,11 +6,11 @@ import MfToolbar from '@/charms/toolbar.vue';
 export default {
   components: { MfInspector, MfSelector, MfToolbar },
   data () {
-    return { selectedCharm: '' };
+    return { charm: '' };
   },
   methods: {
     selectCharm ({ id }) {
-      this.selectedCharm = id;
+      this.charm = id;
     },
   },
 };
@@ -21,7 +21,7 @@ export default {
     <mf-toolbar class="d-print-none my-1"></mf-toolbar>
     <div class="d-flex flex-column-reverse flex-md-row justify-content-center">
       <mf-selector class="selector d-print-none" @click="selectCharm"></mf-selector>
-      <mf-inspector :charm-id="selectedCharm" class="inspector"></mf-inspector>
+      <mf-inspector :charm-id="charm" class="inspector"></mf-inspector>
     </div>
   </div>
 </template>

@@ -18,17 +18,6 @@ env:
 globals:
   process: false
 rules:
-  object-curly-newline:
-  - warn
-  - ObjectExpression:
-      consistent: true
-      multiline: true
-      minProperties: 4
-    ObjectPattern: never
-    ImportDeclaration: never
-    ExportDeclaration: never
-  require-await: off
-
   vue/html-indent:
   - warn
   - 2
@@ -71,7 +60,7 @@ rules:
   valid-typeof: off
   babel/valid-typeof: warn
 overrides:
-- files: ["run.js", "*.config.js", "server/**", "initdb/**", "bot/**"]
+- files: ["run.js", "*.config.js", "server/**", "bot/**"]
   env:
     browser: false
     node: true

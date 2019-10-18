@@ -9,7 +9,7 @@ module.exports = {
     extract: true,
     sourceMap: !production,
   },
-  integrity: false, // not serving from a CDN, and there's that Chrome preload bug
+  integrity: false, // Not serving from a CDN, and there's that Chrome preload bug
   lintOnSave: !production,
   // productionSourceMap: false,
 

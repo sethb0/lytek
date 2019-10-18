@@ -30,9 +30,9 @@ export function serve (basePath, userOptions = {}) {
 
   return async (ctx, next) => {
     if (handleOptions(ctx)) {
-      // truthy return value means OPTIONS method has been handled
-      // falsy means to go ahead and handle GET or HEAD
-      // other methods cause it to throw an exception
+      // Truthy return value means OPTIONS method has been handled
+      // Falsy means to go ahead and handle GET or HEAD
+      // Other methods cause it to throw an exception
       return;
     }
 
@@ -85,7 +85,7 @@ export function serve (basePath, userOptions = {}) {
         const { mtime, size } = stats;
         if (size > options.maxCache) {
           body = fs.createReadStream(null, { fd });
-          // the stream is now responsible for closing fd
+          // The stream is now responsible for closing fd
           fd = null;
           const etag = `W/"${size.toString(16)}-${mtime.getTime().toString(16)}"`;
           result = { size, mtime, etag };
@@ -103,9 +103,8 @@ export function serve (basePath, userOptions = {}) {
         // eslint-disable-next-line no-div-regex
         const hash = digester.digest('base64').replace(/=+$/u, '');
         const etag = `"${size.toString(16)}-${hash}"`;
-        result = cache[filePath] = {
-          size, mtime, etag, contents: body,
-        };
+        // eslint-disable-next-line require-atomic-updates
+        result = cache[filePath] = { size, mtime, etag, contents: body };
         break;
       } catch (err) {
         if (typeof fd === 'number') {

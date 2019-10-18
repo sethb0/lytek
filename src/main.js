@@ -5,7 +5,7 @@ import '@/toplevel/style/app.scss';
 
 import { config as fontAwesomeConfig } from '@fortawesome/fontawesome-svg-core';
 
-import Vue from 'vue'; // auto-aliased by webpack to 'vue/dist/vue-runtime.esm'
+import Vue from 'vue'; // Auto-aliased by webpack to 'vue/dist/vue-runtime.esm'
 import BootstrapVue from 'bootstrap-vue/dist/bootstrap-vue.esm';
 
 import { AuthService } from '@/auth/service';

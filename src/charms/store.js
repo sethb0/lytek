@@ -4,7 +4,6 @@ export default {
     charms: [],
     groups: [],
     types: [],
-    selectedCharm: '',
     selectedGroup: '',
     selectedType: '',
     loading: false,
@@ -23,7 +22,7 @@ export default {
       ) {
         throw new TypeError('Invalid value in mutation charms/charms');
       }
-      // there is no feasible way to check individual Charms for well-formedness
+      // There is no feasible way to check individual Charms for well-formedness
       state.charms = JSON.parse(JSON.stringify(value));
     },
     groups (state, value) {
@@ -45,16 +44,6 @@ export default {
         throw new TypeError('Invalid value in mutation charms/types');
       }
       state.types = value.slice();
-    },
-    selectedCharm (state, value) {
-      if (!value) {
-        state.selectedCharm = '';
-        return;
-      }
-      if (typeof value !== 'string') {
-        throw new TypeError('Invalid value in mutation charms/selectedCharm');
-      }
-      state.selectedCharm = value;
     },
     selectedGroup (state, value) {
       if (!value) {
@@ -116,9 +105,6 @@ export default {
     },
     async setTypes ({ commit }, payload) {
       commit('types', payload);
-    },
-    async setSelectedCharm ({ commit }, payload) {
-      commit('selectedCharm', payload);
     },
     async setSelectedGroup ({ commit }, payload) {
       commit('selectedGroup', payload);

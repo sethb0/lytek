@@ -253,7 +253,7 @@ export default async function run ({ mode, readConfig }) {
     // eslint-disable-next-line no-process-env, require-atomic-updates
     port = parseInt(process.env.PORT, 10);
   } catch {
-    // ignore
+    // Ignore
   }
   if (!port || isNaN(port) || !isFinite(port) || port <= 0 || port !== Math.floor(port)) {
     port = DEFAULT_PORT;
@@ -287,7 +287,7 @@ ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305
   }
 
   return new Promise((resolve, reject) => {
-    srv.on('error', reject); // this is why we can't just use util.promisify
+    srv.on('error', reject); // This is why we can't just use util.promisify
     try {
       srv.listen(port, hostname, (err) => {
         if (err) {
