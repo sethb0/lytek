@@ -10,13 +10,13 @@ export default [
       },
       {
         name: 'charmBrowser',
-        path: 'browse/:charm?',
+        path: 'browse',
         component: () => import(/* webpackChunkName: "charms" */ '@/charms/browser.vue'),
         meta: { title: 'Charm Browser' },
       },
       {
         name: 'charmTrees',
-        path: 'trees/:type?/:group?',
+        path: 'trees',
         component: () => import(/* webpackChunkName: "charms" */ '@/charms/tree-viewer.vue'),
         meta: { title: 'Charm Tree Viewer' },
       },

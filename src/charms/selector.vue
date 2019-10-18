@@ -8,7 +8,7 @@ export default {
   computed: {
     ...mapState('charms', ['charms']),
     sortedCharms () {
-      const c = this.charms;
+      const c = this.charms.slice();
       c.sort((a, b) => {
         if (a.name < b.name) {
           return -1;
