@@ -3,6 +3,8 @@ import { unKebab } from './utils';
 
 class ParameterError extends Error {}
 
+const NON_CHARM_COLLECTIONS = ['proxies', 'dice', 'characters', 'chronicles'];
+
 export const charmTypes = wrap(async (ctx) => {
   const data = await charmTypesLoader(ctx.mongo);
   const body = charmTypesPostprocessor(data, ctx.params);
@@ -91,7 +93,7 @@ function charmTypesLoader (mongo) {
 
 function charmTypesPostprocessor (data) {
   return data.map(({ name }) => name)
-    .filter((x) => x && x !== 'proxies' && x !== 'dice');
+    .filter((x) => x && !NON_CHARM_COLLECTIONS.includes(x));
 }
 
 function getCharmGroupsLoader ({ type }) {
@@ -195,5 +197,5 @@ function identity (x) {
 }
 
 function discard () {
-  // Return undefined;
+  // return undefined;
 }

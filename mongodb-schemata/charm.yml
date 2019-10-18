@@ -354,6 +354,8 @@ oneOf:
     additionalProperties: false
   - type: object
     properties:
+      _id:
+        bsonType: objectId
       for:
         type: object
         properties:
