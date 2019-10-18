@@ -24,21 +24,21 @@ const STATIC_DIR = path.resolve(__dirname, '..', 'dist');
 
 const DEFAULT_PORT = 5000;
 
-async function server (mode, { /* BOT_API_TOKEN, */ DATABASE_URL, KOA_SECRET, MONGODB_URI }) {
+async function server (mode, { BOT_API_TOKEN, /* DATABASE_URL, */ KOA_SECRET, MONGODB_URI }) {
   if (!mode) {
     throw new Error('missing mode');
   }
-  // if (!BOT_API_TOKEN) {
-  //   throw new Error('missing BOT_API_TOKEN');
-  // }
-  if (!DATABASE_URL) {
-    throw new Error('missing DATABASE_URL');
+  if (!BOT_API_TOKEN) {
+    throw new Error('missing configuration parameter BOT_API_TOKEN');
   }
+  // if (!DATABASE_URL) {
+  //   throw new Error('missing configuration parameter DATABASE_URL');
+  // }
   if (!KOA_SECRET) {
-    throw new Error('missing KOA_SECRET');
+    throw new Error('missing configuration parameter KOA_SECRET');
   }
   if (!MONGODB_URI) {
-    throw new Error('missing MONGODB_URI');
+    throw new Error('missing configuration parameter MONGODB_URI');
   }
 
   const app = new Koa();
@@ -273,7 +273,7 @@ export default async function run ({ mode, readConfig }) {
     protocol = 'HTTPS';
     srv = https.createServer({
       key: readConfig('PRIVATE_KEY', 'private.pem', 'private key'),
-      cert: readConfig('CERTIFICATE_CHAIN', 'cert.pem', 'certificate'),
+      cert: readConfig('CERTIFICATE', 'cert.pem', 'certificate'),
       ciphers: `
 TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384:
 ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:

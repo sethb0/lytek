@@ -90,7 +90,7 @@ function charmTypesLoader (mongo) {
 
 function charmTypesPostprocessor (data) {
   return data.map(({ name }) => name)
-    .filter((x) => x && x !== 'proxies');
+    .filter((x) => x && x !== 'proxies' && x !== 'dice');
 }
 
 function getCharmGroupsLoader ({ type }) {
