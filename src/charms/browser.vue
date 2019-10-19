@@ -34,7 +34,7 @@ export default {
 @media screen {
   .selector {
     height: var(--inspector-height);
-    overflow-y: auto;
+    overflow-y: scroll;
   }
 }
 
@@ -46,7 +46,7 @@ export default {
   .inspector {
     height: var(--inspector-height);
     margin: 0px 0px 0px var(--spacer);
-    overflow-y: auto;
+    overflow-y: scroll;
     overscroll-behavior: constrain;
   }
 }
