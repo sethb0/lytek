@@ -82,6 +82,7 @@ export default {
   .inspector {
     flex-grow: 0.5;
     height: calc(var(--inspector-height) + 2 * var(--spacer));
+    margin: 0px 0px 0px var(--spacer);
     overflow-y: scroll;
     overscroll-behavior: contain;
   }

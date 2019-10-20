@@ -174,7 +174,7 @@ function rewriteGenerics (charms, { group }) {
         const gTxt = group === 'Ebon Dragon' ? 'The Ebon Dragon' : group;
         description = `${description}\n### ${gTxt}\n${variant.description}`;
       }
-      const ch = { ...charm, name: renameCharm(charm, group), description };
+      const ch = { ...charm, name: renameCharm(charm, group, variant), description };
       delete ch.variants;
       return ch;
     }

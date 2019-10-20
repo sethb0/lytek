@@ -27,9 +27,6 @@ export default {
     groups () {
       this.groupsChanged();
     },
-    charms () {
-      this.$store.dispatch('charms/setSelectedCharm', null);
-    },
     selectedType () {
       this.typesChanged();
     },

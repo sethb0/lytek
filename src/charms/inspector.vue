@@ -3,7 +3,7 @@ import Markdown from 'markdown-it';
 import MarkdownDeflist from 'markdown-it-deflist';
 import { mapState } from 'vuex';
 
-import { formatDescription } from '@/charms/make-md';
+import { formatDescription, getVariantName, spliceVariant } from '@/charms/make-md';
 
 const CHARM_ID_REGEXP = /^([^\s.]+\.[^\s.]+)(?:\.(\S+))?$/u;
 
@@ -29,6 +29,23 @@ export default {
     defaultCharm () {
       return this.charms.find((x) => x.type !== 'generic' && x.type !== 'proxy');
     },
+    idDict () {
+      const d = Object.fromEntries([].concat(...this.charms.map((charm) => {
+        const values = [[charm.id, charm.name]];
+        if (charm.type === 'generic') {
+          values.push([
+            spliceVariant(charm.id, this.charmGroup),
+            charm.name,
+          ]);
+        }
+        values.push(...(charm.variants || []).map((variant) => [
+          spliceVariant(charm.id, variant.id),
+          getVariantName(charm.name, variant.name || variant.id),
+        ]));
+        return values;
+      })));
+      return d;
+    },
   },
   watch: {
     charmId () {
@@ -46,7 +63,7 @@ export default {
         if (charm && charm.type !== 'proxy') {
           const variant = v && charm.variants?.find((x) => x.id === v);
           this.html = markdownProcessor.render(
-            formatDescription(charm, variant, this.charmGroup)
+            formatDescription(charm, { variant, group: this.charmGroup, dict: this.idDict })
           );
         }
       }
