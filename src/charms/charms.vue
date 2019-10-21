@@ -5,11 +5,10 @@ import { faSyncAlt } from '@fortawesome/pro-duotone-svg-icons/faSyncAlt';
 import { mapState } from 'vuex';
 /* eslint-enable node/no-unpublished-import */
 
-import { CharmsService, MissingDataError } from '../service';
-import MfLoading from '../../toplevel/loading.vue';
+import { CharmsService, MissingDataError } from './service';
+import MfLoading from '../toplevel/loading.vue';
 
 export default {
-  name: 'CharmsRoot',
   inject: ['authService', 'toaster'],
   components: { FaI, MfLoading },
   data () {

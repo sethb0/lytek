@@ -1,7 +1,7 @@
 export default [
   {
     path: '/charms',
-    component: () => import(/* webpackChunkName: "charms" */ '@/charms/shared/root.vue'),
+    component: () => import(/* webpackChunkName: "charms" */ '@/charms/charms.vue'),
     meta: { title: 'Charms' },
     children: [
       {
