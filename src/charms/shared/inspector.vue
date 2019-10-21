@@ -1,10 +1,13 @@
 <script>
+/* eslint-disable node/no-unpublished-import */
 import Markdown from 'markdown-it';
 import MarkdownDeflist from 'markdown-it-deflist';
 import { mapState } from 'vuex';
+/* eslint-enable node/no-unpublished-import */
 
-import { formatDescription, getVariantName, spliceVariant } from '@/charms/make-md';
+import { formatDescription, getVariantName, spliceVariant } from './make-md';
 
+// eslint-disable-next-line unicorn/no-unsafe-regex
 const CHARM_ID_REGEXP = /^([^\s.]+\.[^\s.]+)(?:\.(\S+))?$/u;
 
 const markdownProcessor = new Markdown({ breaks: true })
@@ -30,7 +33,7 @@ export default {
       return this.charms.find((x) => x.type !== 'generic' && x.type !== 'proxy');
     },
     idDict () {
-      const d = Object.fromEntries([].concat(...this.charms.map((charm) => {
+      const d = Object.fromEntries(this.charms.flatMap((charm) => {
         const values = [[charm.id, charm.name]];
         if (charm.type === 'generic') {
           values.push([
@@ -43,7 +46,7 @@ export default {
           getVariantName(charm.name, variant.name || variant.id),
         ]));
         return values;
-      })));
+      }));
       return d;
     },
   },
@@ -76,7 +79,7 @@ export default {
   <div class="body">
     <div class="hstrut"></div>
     <!-- eslint-disable-next-line vue/no-v-html -->
-    <div class="markdown" v-html="html"></div>
+    <div v-html="html" class="markdown"></div>
   </div>
 </template>
 

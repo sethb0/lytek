@@ -1,10 +1,12 @@
 <script>
 /* eslint no-console: off */
+/* eslint-disable node/no-unpublished-import */
 import Viz from 'viz.js/viz.es';
 import vizWorkerFile from 'viz.js/lite.render';
 import { mapState } from 'vuex';
+/* eslint-enable node/no-unpublished-import */
 
-import { getTitle, makeGv } from '@/charms/make-gv';
+import { getTitle, makeGv } from './make-gv';
 
 export default {
   inject: ['toaster'],
@@ -101,7 +103,7 @@ export default {
         if (svgHolder.childElementCount) {
           svgHolder.removeChild(svgHolder.firstElementChild);
         }
-        svgHolder.appendChild(svgElement);
+        svgHolder.append(svgElement);
         this.renderedType = type;
         this.$emit('rendered', { type, group, title });
       });
@@ -124,7 +126,7 @@ export default {
 };
 
 function postprocess (svgElement, handler) {
-  svgElement.getElementById('a_graph0').remove();
+  svgElement.querySelector('#a_graph0').remove();
   for (const el of svgElement.querySelectorAll('title')) {
     el.remove();
   }
@@ -140,13 +142,13 @@ function postprocess (svgElement, handler) {
   }
   for (const el of svgElement.querySelectorAll('g.node a, g.cluster a')) {
     el.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '#');
-    el.onclick = handler;
+    el.addEventListener('click', handler);
   }
 }
 </script>
 
 <template>
-  <div class="colorizer" :class="renderedType">
+  <div :class="renderedType" class="colorizer">
     <div ref="svgHolder" class="svg-holder"></div>
   </div>
 </template>

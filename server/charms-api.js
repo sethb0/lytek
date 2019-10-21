@@ -1,7 +1,12 @@
 /* eslint require-atomic-updates: off */
 import { unKebab } from './utils';
 
-class ParameterError extends Error {}
+class ParameterError extends Error {
+  constructor (message) {
+    super(message);
+    this.name = 'ParameterError';
+  }
+}
 
 const NON_CHARM_COLLECTIONS = ['proxies', 'dice', 'characters', 'chronicles'];
 

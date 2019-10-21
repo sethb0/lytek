@@ -1,4 +1,4 @@
-import { unKebab } from '@/utils';
+import { unKebab } from '../../utils';
 
 const FONT_FAMILY = 'Pterra';
 const FONT_SIZE = 10;

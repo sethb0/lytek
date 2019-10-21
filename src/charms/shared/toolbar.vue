@@ -1,9 +1,11 @@
 <script>
+/* eslint-disable node/no-unpublished-import */
 import { FontAwesomeIcon as FaI } from '@fortawesome/vue-fontawesome';
 import { faSyncAlt } from '@fortawesome/pro-duotone-svg-icons/faSyncAlt';
 import { mapState } from 'vuex';
+/* eslint-enable node/no-unpublished-import */
 
-import { unKebab } from '@/utils';
+import { unKebab } from '../../utils';
 
 const ABILITIES = [
   'Archery', 'Athletics', 'Awareness', 'Bureaucracy', 'Craft', 'Dodge', 'Integrity',
@@ -160,7 +162,7 @@ export default {
 <template>
   <b-button-toolbar class="bg-light toolbar" aria-label="Charm viewer toolbar">
     <b-button-group size="sm" class="mx-2 py-1">
-      <b-button title="Reload Charms" :disabled="loading" @click="reloadCharms">
+      <b-button :disabled="loading" @click="reloadCharms" title="Reload Charms">
         <fa-i :icon="faReload" :spin="loading"></fa-i>
         <span v-if="loading" class="sr-only">Loading…</span>
         <span v-else class="sr-only">Reload Charms</span>

@@ -1,18 +1,21 @@
+/* eslint-disable node/no-unpublished-import */
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import '@fortawesome/fontawesome-svg-core/styles.css';
+/* eslint-enable node/no-unpublished-import */
 
-import '@/toplevel/style/app.scss';
+import './toplevel/style/app.scss';
 
-import { config as fontAwesomeConfig } from '@fortawesome/fontawesome-svg-core';
-
-import Vue from 'vue'; // Auto-aliased by webpack to 'vue/dist/vue-runtime.esm'
+/* eslint-disable node/no-unpublished-import */
 import BootstrapVue from 'bootstrap-vue/dist/bootstrap-vue.esm';
+import Vue from 'vue'; // Auto-aliased by webpack to 'vue/dist/vue-runtime.esm'
+import { config as fontAwesomeConfig } from '@fortawesome/fontawesome-svg-core';
+/* eslint-enable node/no-unpublished-import */
 
-import { AuthService } from '@/auth/service';
+import { AuthService } from './auth/service';
 
-import App from '@/toplevel/app.vue';
-import router from '@/router';
-import store from '@/store';
+import App from './toplevel/app.vue';
+import router from './router';
+import store from './store';
 
 fontAwesomeConfig.autoAddCss = false;
 

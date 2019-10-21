@@ -1,8 +1,10 @@
 <script>
+/* eslint-disable node/no-unpublished-import */
 import { FontAwesomeIcon as FaI } from '@fortawesome/vue-fontawesome';
 import { faSignIn } from '@fortawesome/pro-duotone-svg-icons/faSignIn';
 import { faSignOut } from '@fortawesome/pro-duotone-svg-icons/faSignOut';
 import { mapGetters } from 'vuex';
+/* eslint-enable node/no-unpublished-import */
 
 export default {
   components: { FaI },

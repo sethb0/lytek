@@ -1,9 +1,11 @@
 <script>
+/* eslint-disable node/no-unpublished-import */
 import { mapGetters, mapState } from 'vuex';
+/* eslint-enable node/no-unpublished-import */
 
-import MfLoading from '@/toplevel/loading.vue';
-import MfNavbar from '@/toplevel/navbar.vue';
-import MfPrivate from '@/auth/private.vue';
+import MfLoading from './loading.vue';
+import MfNavbar from './navbar.vue';
+import MfPrivate from '../auth/private.vue';
 
 export default {
   components: { MfLoading, MfNavbar, MfPrivate },

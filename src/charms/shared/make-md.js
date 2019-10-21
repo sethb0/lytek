@@ -79,24 +79,22 @@ function mergePrerequisites (...prereqs) {
   const essence = Math.max(0, ...prereqs.map((p) => p.essence || 0));
   const excellencies = Math.max(0, ...prereqs.map((p) => p.excellencies || 0));
   const oxMerger = {};
-  for (const { variant, threshold } of [].concat(
-    ...prereqs.map((p) => p['other excellencies'] || [])
-  )) {
+  for (const { variant, threshold } of prereqs.flatMap((p) => p['other excellencies'] || [])) {
     oxMerger[variant] = Math.max(oxMerger[variant] || 0, threshold);
   }
   const otherExcellencies = Object.entries(oxMerger)
     .map(([k, v]) => ({ variant: k, threshold: v }));
   const traits = {};
-  for (const [trait, minimum] of [].concat(
-    ...prereqs.map((p) => (p.traits && Object.entries(p.traits)) || [])
-  )) {
+  for (const [trait, minimum]
+    of prereqs.flatMap((p) => (p.traits && Object.entries(p.traits)) || [])
+  ) {
     traits[trait] = Math.max(traits[trait] || 0, minimum);
   }
   const charmsMerger = Object.fromEntries(
-    [].concat(...prereqs.map((p) => p.charms || []))
+    prereqs.flatMap((p) => p.charms || [])
       .map((charm) => [spliceVariant(charm.id, charm.variant), charm.count])
   );
-  const groups = mergeGroups([].concat(...prereqs.map((p) => p.groups || [])), charmsMerger);
+  const groups = mergeGroups(prereqs.flatMap((p) => p.groups || []), charmsMerger);
   const charms = Object.entries(charmsMerger).map(([k, v]) => {
     const u = unspliceVariant(k);
     if (v) {

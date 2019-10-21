@@ -1,4 +1,5 @@
 /* eslint camelcase: off */
+// eslint-disable-next-line node/no-unpublished-import
 import createAuth0Client from '@auth0/auth0-spa-js';
 
 const AUDIENCE = 'https://lytek.sharpcla.ws';

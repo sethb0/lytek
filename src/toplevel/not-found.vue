@@ -1,5 +1,5 @@
 <script>
-import MfFramework from '@/toplevel/framework.vue';
+import MfFramework from './framework.vue';
 
 export default {
   components: { MfFramework },

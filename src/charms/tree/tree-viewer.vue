@@ -1,8 +1,8 @@
 <script>
-import MfInspector from '@/charms/inspector.vue';
-import MfTitlebar from '@/charms/titlebar.vue';
-import MfToolbar from '@/charms/toolbar.vue';
-import MfVisualizer from '@/charms/visualizer.vue';
+import MfInspector from '../shared/inspector.vue';
+import MfTitlebar from './titlebar.vue';
+import MfToolbar from '../shared/toolbar.vue';
+import MfVisualizer from './visualizer.vue';
 
 export default {
   components: {
@@ -28,7 +28,7 @@ export default {
     <div class="tree-viewer-container">
       <div class="visualizer-container">
         <mf-titlebar :title="title" class="titlebar"></mf-titlebar>
-        <mf-visualizer class="visualizer" @rendered="setTitle" @click="selectCharm">
+        <mf-visualizer @rendered="setTitle" @click="selectCharm" class="visualizer">
         </mf-visualizer>
       </div>
       <mf-inspector :charm-id="selectedCharm" class="inspector"></mf-inspector>

@@ -1,5 +1,7 @@
 <script>
+/* eslint-disable node/no-unpublished-import */
 import { mapState } from 'vuex';
+/* eslint-enable node/no-unpublished-import */
 
 export default {
   data () {
@@ -36,8 +38,9 @@ export default {
 <template>
   <div class="charm-selector">
     <b-list-group v-if="charms.length">
-      <b-list-group-item v-for="c in sortedCharms" :key="c.id" href="#"
-        :class="{ active: selectedCharm === c.id }" @click.prevent="selectCharm(c.id)"
+      <b-list-group-item v-for="c in sortedCharms" :key="c.id"
+        :class="{ active: selectedCharm === c.id }"
+        @click.prevent="selectCharm(c.id)" href="#"
       >
         {{ c.name }}
       </b-list-group-item>

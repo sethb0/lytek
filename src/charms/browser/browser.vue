@@ -1,7 +1,7 @@
 <script>
-import MfInspector from '@/charms/inspector.vue';
-import MfSelector from '@/charms/selector.vue';
-import MfToolbar from '@/charms/toolbar.vue';
+import MfInspector from '../shared/inspector.vue';
+import MfSelector from './selector.vue';
+import MfToolbar from '../shared/toolbar.vue';
 
 export default {
   components: { MfInspector, MfSelector, MfToolbar },
@@ -20,7 +20,7 @@ export default {
   <div>
     <mf-toolbar class="d-print-none my-1"></mf-toolbar>
     <div class="d-flex flex-column-reverse flex-md-row justify-content-center">
-      <mf-selector class="selector d-print-none" @click="selectCharm"></mf-selector>
+      <mf-selector @click="selectCharm" class="selector d-print-none"></mf-selector>
       <mf-inspector :charm-id="charm" class="inspector"></mf-inspector>
     </div>
   </div>

@@ -1,10 +1,12 @@
+/* eslint-disable node/no-unpublished-import */
 import Vue from 'vue';
 import Vuex from 'vuex';
+/* eslint-enable node/no-unpublished-import */
 
-import auth from '@/auth/store';
-// import characters from '@/characters/store';
-import charms from '@/charms/store';
-// import chronicles from '@/chronicles/store';
+import auth from './auth/store';
+// import characters from './characters/store';
+import charms from './charms/store';
+// import chronicles from './chronicles/store';
 
 Vue.use(Vuex);
 

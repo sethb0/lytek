@@ -68,6 +68,7 @@ export async function handler (message, { logger }) {
     return message.reply(HELP_TEXT);
   }
   const matches
+  // eslint-disable-next-line unicorn/no-unsafe-regex
     = /^\/roll((?:\s+(?:[a-z]+|\d+))*)\s*(?:#\s*(\S(?:.*\S)?)\s*)?$/iu.exec(content);
   if (!matches) {
     if (content.startsWith('/')) {

@@ -3,7 +3,12 @@ import jwt from 'koa-jwt';
 import { TokenExpiredError, JsonWebTokenError } from 'jsonwebtoken';
 import { koaJwtSecret, JwksRateLimitError, SigningKeyNotFoundError } from 'jwks-rsa';
 
-export class AzpError extends JsonWebTokenError {}
+export class AzpError extends JsonWebTokenError {
+  constructor (message) {
+    super(message);
+    this.name = 'AzpError';
+  }
+}
 
 export function auth0Jwt (options = {}) {
   const { tenant, audience, expose, clientId } = options;

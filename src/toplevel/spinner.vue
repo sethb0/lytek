@@ -1,6 +1,8 @@
 <script>
+/* eslint-disable node/no-unpublished-import */
 import { FontAwesomeIcon as FaI } from '@fortawesome/vue-fontawesome';
 import { faSun } from '@fortawesome/pro-duotone-svg-icons/faSun';
+/* eslint-enable node/no-unpublished-import */
 
 export default {
   components: { FaI },

@@ -1,10 +1,12 @@
 <script>
+/* eslint-disable node/no-unpublished-import */
 import { FontAwesomeIcon as FaI } from '@fortawesome/vue-fontawesome';
 import { faSyncAlt } from '@fortawesome/pro-duotone-svg-icons/faSyncAlt';
 import { mapState } from 'vuex';
+/* eslint-enable node/no-unpublished-import */
 
-import { CharmsService, MissingDataError } from '@/charms/service';
-import MfLoading from '@/toplevel/loading.vue';
+import { CharmsService, MissingDataError } from '../service';
+import MfLoading from '../../toplevel/loading.vue';
 
 export default {
   name: 'CharmsRoot',
@@ -159,7 +161,7 @@ export default {
     <b-card v-else-if="canInitialize" title="The Charms service failed to start."
       text-variant="white" bg-variant="warning" class="message-card mx-auto"
     >
-      <b-button size="lg" variant="primary" @click="initService">
+      <b-button @click="initService" size="lg" variant="primary">
         <fa-i :icon="faReload" class="mr-2"></fa-i>
         Try again?
       </b-button>

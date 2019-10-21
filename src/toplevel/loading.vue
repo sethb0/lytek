@@ -1,5 +1,5 @@
 <script>
-import MfSpinner from '@/toplevel/spinner.vue';
+import MfSpinner from './spinner.vue';
 
 export default {
   components: { MfSpinner },

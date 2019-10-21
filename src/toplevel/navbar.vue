@@ -1,9 +1,11 @@
 <script>
+/* eslint-disable node/no-unpublished-import */
 import { FontAwesomeIcon as FaI } from '@fortawesome/vue-fontawesome';
 import { faSignIn } from '@fortawesome/pro-duotone-svg-icons/faSignIn';
 import { faSignOut } from '@fortawesome/pro-duotone-svg-icons/faSignOut';
 import { faExclamationCircle } from '@fortawesome/pro-regular-svg-icons/faExclamationCircle';
 import { mapGetters, mapState } from 'vuex';
+/* eslint-enable node/no-unpublished-import */
 
 export default {
   components: { FaI },
@@ -57,7 +59,7 @@ export default {
             </span>
             <span class="sr-only">User Profile</span>
           </b-nav-item>
-          <b-nav-item v-if="isAdmin" class="mx-md-2" @click="disableAdmin">
+          <b-nav-item v-if="isAdmin" @click="disableAdmin" class="mx-md-2">
             <fa-i v-b-tooltip :icon="faAdmin" size="lg" title="Disable administrative controls"
               class="text-warning mr-2"
             ></fa-i>

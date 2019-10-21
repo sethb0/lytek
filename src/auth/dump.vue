@@ -1,4 +1,5 @@
 <script>
+// eslint-disable-next-line node/no-unpublished-import
 import { mapGetters, mapState } from 'vuex/dist/vuex.esm';
 
 export default {

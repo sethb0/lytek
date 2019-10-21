@@ -1,7 +1,30 @@
-export class CharmsServiceError extends Error {}
-export class MissingDataError extends CharmsServiceError {}
-export class ServerError extends CharmsServiceError {}
-export class SchemaError extends ServerError {}
+export class CharmsServiceError extends Error {
+  constructor (message) {
+    super(message);
+    this.name = 'CharmsServiceError';
+  }
+}
+
+export class MissingDataError extends CharmsServiceError {
+  constructor (message) {
+    super(message);
+    this.name = 'MissingDataError';
+  }
+}
+
+export class ServerError extends CharmsServiceError {
+  constructor (message) {
+    super(message);
+    this.name = 'ServerError';
+  }
+}
+
+export class SchemaError extends ServerError {
+  constructor (message) {
+    super(message);
+    this.name = 'SchemaError';
+  }
+}
 
 export class CharmsService {
   constructor (getAccessToken) {

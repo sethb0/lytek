@@ -1,6 +1,6 @@
 <script>
-import darkpack from '@/toplevel/img/darkpack.jpg';
-import logo from '@/toplevel/img/logo256.png';
+import darkpack from './img/darkpack.jpg';
+import logo from './img/logo256.png';
 
 export default {
   props: {
@@ -33,7 +33,7 @@ export default {
 <template>
   <div class="mb-3 d-flex flex-wrap flex-md-nowrap justify-content-center">
     <div class="mx-auto mx-md-0">
-      <b-img class="logo mx-sm-3 mb-3" :src="logo" alt="Sol Invictus">
+      <b-img :src="logo" class="logo mx-sm-3 mb-3" alt="Sol Invictus">
       </b-img>
     </div>
     <div class="mx-auto mx-md-0">
@@ -53,7 +53,7 @@ export default {
               <b-link href="https://www.white-wolf.com">white-wolf.com</b-link>.
             </p>
             <b-link href="https://www.white-wolf.com/dark-pack">
-              <b-img class="dark-pack" :src="darkpack" alt="White Wolf Dark Pack logo">
+              <b-img :src="darkpack" class="dark-pack" alt="White Wolf Dark Pack logo">
               </b-img>
             </b-link>
           </template>

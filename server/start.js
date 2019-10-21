@@ -250,7 +250,7 @@ function handleError (mode) {
 export default async function run ({ mode, readConfig }) {
   let port;
   try {
-    // eslint-disable-next-line no-process-env, require-atomic-updates
+    // eslint-disable-next-line no-process-env
     port = parseInt(process.env.PORT, 10);
   } catch {
     // Ignore

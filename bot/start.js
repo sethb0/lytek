@@ -2,7 +2,7 @@ import Discord from 'discord.js'; // Stupid package name…
 import superagent from 'superagent';
 import winston from 'winston';
 
-import { handler } from './handler.js';
+import { handler } from './handler';
 
 export default async function run ({ mode, readConfig }) {
   if (!mode) {

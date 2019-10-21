@@ -1,9 +1,11 @@
 <script>
+/* eslint-disable node/no-unpublished-import */
 import { FontAwesomeIcon as FaI } from '@fortawesome/vue-fontawesome';
 import { faSignIn } from '@fortawesome/pro-duotone-svg-icons';
 import { mapGetters } from 'vuex';
+/* eslint-ensable node/no-unpublished-import */
 
-import MfFramework from '@/toplevel/framework.vue';
+import MfFramework from './framework.vue';
 
 export default {
   components: { FaI, MfFramework },
@@ -20,7 +22,7 @@ export default {
 </script>
 
 <template>
-  <mf-framework header="Welcome to Lytek!" :header-level="4" variant="success">
+  <mf-framework :header-level="4" header="Welcome to Lytek!" variant="success">
     <template v-if="authorized">
       <p>
         Hello, {{ friendlyName }}! You are

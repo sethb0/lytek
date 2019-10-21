@@ -72,7 +72,7 @@ export function serve (basePath, userOptions = {}) {
     let fileType = null;
     for (const p of tryPaths) {
       filePath = p;
-      fileType = path.extname(p).substr(1);
+      fileType = path.extname(p).slice(1);
       if (cache[p]) {
         result = cache[p];
         body = result.contents;
@@ -80,8 +80,8 @@ export function serve (basePath, userOptions = {}) {
       }
       let fd = null;
       try {
-        fd = await open(p, 'r'); // eslint-disable-line no-await-in-loop
-        const stats = await fstat(fd); // eslint-disable-line no-await-in-loop
+        fd = await open(p, 'r');
+        const stats = await fstat(fd);
         const { mtime, size } = stats;
         if (size > options.maxCache) {
           body = fs.createReadStream(null, { fd });
@@ -91,11 +91,11 @@ export function serve (basePath, userOptions = {}) {
           result = { size, mtime, etag };
           break;
         }
-        body = await readFile(fd); // eslint-disable-line no-await-in-loop
+        body = await readFile(fd);
         // body is now a Buffer
         close(fd)
-          .catch((err2) => {
-            process.emitWarning(err2);
+          .catch((err) => {
+            process.emitWarning(err);
           });
         fd = null;
         const digester = crypto.createHash('sha256');
@@ -173,7 +173,7 @@ export function serveOneFile (filePath, userOptions = {}) {
   const lastModified = stats.mtime;
   const fileType = path.extname(filePath);
 
-  return async (ctx) => { // eslint-disable-line require-await
+  return async (ctx) => {
     if (handleOptions(ctx)) {
       return;
     }
