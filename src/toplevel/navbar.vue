@@ -47,6 +47,7 @@ export default {
           <b-dropdown-item :to="{ name: 'charmBrowser' }">Browse</b-dropdown-item>
           <b-dropdown-item :to="{ name: 'charmTrees' }">Tree View</b-dropdown-item>
         </b-nav-item-dropdown>
+        <b-nav-item :to="{ name: 'reference' }">Reference</b-nav-item>
       </b-navbar-nav>
 
       <b-navbar-nav class="ml-md-auto">

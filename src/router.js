@@ -7,6 +7,7 @@ import auth from './auth/router';
 // import characters from '@/characters/router';
 import charms from './charms/router';
 // import chronicles from '@/chronicles/router';
+import reference from './reference/router';
 
 import Home from './toplevel/home.vue';
 import NotFound from './toplevel/not-found.vue';
@@ -35,6 +36,7 @@ const router = new Router({
     // ...characters,
     ...charms,
     // ...chronicles,
+    ...reference,
     {
       path: '*',
       component: NotFound,
