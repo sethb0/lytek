@@ -5,17 +5,15 @@
   "private": true,
   "author": "Rook <rook@sharpcla.ws>",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/sethb0/lytek.git"
-  },
+  "repository": "github:sethb0/lytek",
   "engines": {
-    "node": ">=12.10",
-    "npm": ">=6.11"
+    "node": ">=12.12",
+    "npm": ">=6.12"
   },
   "os": [
     "!win32"
   ],
+  "type": "commonjs",
   "scripts": {
     "start": "BABEL_ENV=server VUE_CLI_BABEL_TRANSPILE_MODULES=1 node --require @babel/register run.js",
     "serve": "vue-cli-service serve --https",
@@ -34,7 +32,7 @@
     "@babel/register": "^7.6.2",
     "@vue/babel-preset-app": "^4.0.4",
     "chalk": "^2.4.2",
-    "core-js": "^3.3.2",
+    "core-js": "^3.3.3",
     "discord.js": "^11.5.1",
     "dotenv": "^8.2.0",
     "jwks-rsa": "^1.6.0",
@@ -58,7 +56,8 @@
     "@fortawesome/pro-duotone-svg-icons": "^5.11.2",
     "@fortawesome/pro-regular-svg-icons": "^5.11.2",
     "@fortawesome/vue-fontawesome": "^0.1.7",
-    "@sethb0/eslint-config-mfllc": "^0.8.2",
+    "@sethb0/eslint-config-mfllc": "^1.0.0",
+    "@sethb0/eslint-config-mfllc-vue": "^0.1.0",
     "@sethb0/yaml-utils": "^0.6.2",
     "@vue/cli-plugin-babel": "^4.0.4",
     "@vue/cli-plugin-eslint": "^4.0.4",
@@ -73,8 +72,11 @@
     "chai": "^4.1.2",
     "eslint": "^6.5.1",
     "eslint-plugin-babel": "^5.3.0",
+    "eslint-plugin-mocha": "^6.2.0",
+    "eslint-plugin-node": "^10.0.0",
     "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-vue": "github:vuejs/eslint-plugin-vue#master",
+    "eslint-plugin-unicorn": "^12.1.0",
+    "eslint-plugin-vue": "^5.2.3",
     "js-yaml": "^3.13.1",
     "markdown-it": "^10.0.0",
     "markdown-it-deflist": "^2.0.3",
