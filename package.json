@@ -60,6 +60,7 @@
     "@sethb0/eslint-config-mfllc": "^1.0.0",
     "@sethb0/eslint-config-mfllc-vue": "^0.1.0",
     "@sethb0/yaml-utils": "^0.6.2",
+    "@ven2/refcards": "*",
     "@vue/cli-plugin-babel": "^4.0.5",
     "@vue/cli-plugin-eslint": "^4.0.5",
     "@vue/cli-plugin-router": "^4.0.5",
