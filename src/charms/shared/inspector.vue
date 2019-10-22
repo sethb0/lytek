@@ -1,7 +1,10 @@
 <script>
 /* eslint-disable node/no-unpublished-import */
 import Markdown from 'markdown-it';
+import MarkdownAbbr from 'markdown-it-abbr';
 import MarkdownDeflist from 'markdown-it-deflist';
+import MarkdownSubscript from 'markdown-it-sub';
+import MarkdownSuperscript from 'markdown-it-sup';
 import { mapState } from 'vuex';
 /* eslint-enable node/no-unpublished-import */
 
@@ -11,7 +14,10 @@ import { formatDescription, getVariantName, spliceVariant } from './make-md';
 const CHARM_ID_REGEXP = /^([^\s.]+\.[^\s.]+)(?:\.(\S+))?$/u;
 
 const markdownProcessor = new Markdown({ breaks: true })
-  .use(MarkdownDeflist);
+  .use(MarkdownAbbr)
+  .use(MarkdownDeflist)
+  .use(MarkdownSubscript)
+  .use(MarkdownSuperscript);
 
 export default {
   props: {

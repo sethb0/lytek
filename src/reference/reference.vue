@@ -1,7 +1,10 @@
 <script>
 /* eslint-disable node/no-unpublished-import */
 import Markdown from 'markdown-it';
+import MarkdownAbbr from 'markdown-it-abbr';
 import MarkdownDeflist from 'markdown-it-deflist';
+import MarkdownSubscript from 'markdown-it-sub';
+import MarkdownSuperscript from 'markdown-it-sup';
 import { mapState } from 'vuex';
 
 import index from '@ven2/refcards/data/index.yml';
@@ -10,7 +13,10 @@ import index from '@ven2/refcards/data/index.yml';
 import MfLoading from '../toplevel/loading.vue';
 
 const markdownProcessor = new Markdown({ breaks: false })
-  .use(MarkdownDeflist);
+  .use(MarkdownAbbr)
+  .use(MarkdownDeflist)
+  .use(MarkdownSubscript)
+  .use(MarkdownSuperscript);
 
 export default {
   inject: ['toaster'],
