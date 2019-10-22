@@ -48,12 +48,6 @@ div.fake-hr { height: 3px; }
   font-weight: normal;
 }
 
-:root {
-  --navbar-height: 3rem;
-  --body-margin: calc(var(--navbar-height) + var(--spacer) * 2);
-  --main-height: calc(100vh - var(--body-margin));
-}
-
 .app-navbar {
   min-height: var(--navbar-height);
 }

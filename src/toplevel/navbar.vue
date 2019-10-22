@@ -36,7 +36,7 @@ export default {
 </script>
 
 <template>
-  <b-navbar fixed="top" toggleable="md" variant="secondary" type="dark" class="d-print-none">
+  <b-navbar fixed="top" toggleable="md" type="dark" variant="primary" class="d-print-none">
     <b-navbar-brand :to="{ name: 'home' }" exact class="brand-font force-brand-font-color">
       Lytek
     </b-navbar-brand>

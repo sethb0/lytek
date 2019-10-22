@@ -31,7 +31,7 @@ export default {
 </script>
 
 <template>
-  <div class="mb-3 d-flex flex-wrap flex-md-nowrap justify-content-center">
+  <div class="outer d-flex flex-wrap flex-md-nowrap justify-content-center">
     <div class="mx-auto mx-md-0">
       <b-img :src="logo" class="logo mx-sm-3 mb-3" alt="Sol Invictus">
       </b-img>
@@ -67,10 +67,12 @@ export default {
 .jumbotron {
   max-width: 35rem;
 }
+
 img.logo {
   height: auto;
   width: 14.5rem;
 }
+
 img.dark-pack {
   max-height: 8rem;
   max-width: auto;

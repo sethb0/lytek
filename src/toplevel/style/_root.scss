@@ -1,5 +1,11 @@
 :root {
   --spacer: #{$spacer / 4};
+  --navbar-height: 3.75rem;
+  --body-margin: calc(var(--navbar-height) + var(--spacer) * 2);
+  --main-height: calc(100vh - var(--body-margin));
+
+  --theme-body-background: $body-bg;
+  --theme-body-color: $body-color;
 
   --named-color-kobicha: #6b4423;
 
