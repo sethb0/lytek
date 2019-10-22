@@ -24,6 +24,23 @@ module.exports = {
 
     config
       .module
+      .rule('yaml')
+      .test(/\.ya?ml$/u)
+      .use('json-loader')
+      .loader('json-loader')
+      .end()
+      .use('yaml-loader')
+      .loader('yaml-loader');
+
+    config
+      .module
+      .rule('markdown')
+      .test(/\.md$/u)
+      .use('raw-loader')
+      .loader('raw-loader');
+
+    config
+      .module
       .rule('vue')
       .use('vue-loader')
       .loader('vue-loader')
