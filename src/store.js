@@ -7,6 +7,7 @@ import auth from './auth/store';
 // import characters from './characters/store';
 import charms from './charms/store';
 // import chronicles from './chronicles/store';
+import reference from './reference/store';
 
 Vue.use(Vuex);
 
@@ -17,5 +18,6 @@ export default new Vuex.Store({
     // characters,
     charms,
     // chronicles,
+    reference,
   },
 });
