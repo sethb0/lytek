@@ -43,9 +43,9 @@ export default {
         );
         this.$nextTick(() => {
           this.loading = false;
-          this.cards = content.map((c, i) => ({
+          this.cards = content.map(({ 'default': markdown }, i) => ({
             name: entry[i],
-            html: markdownProcessor.render(c.default),
+            html: markdownProcessor.render(markdown),
           }));
         });
       } catch (err) {
