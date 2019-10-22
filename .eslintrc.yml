@@ -6,10 +6,13 @@ env:
 globals:
   process: false
 overrides:
-- files: ["run.js", "*.config.js", "server/**", "bot/**"]
+- files: ["run.js", "filesize.js", "*.config.js", "server/**", "bot/**"]
   env:
     browser: false
     node: true
+- files: filesize.js
+  parserOptions:
+    sourceType: script
 - files: "*.config.js"
   rules:
     no-process-env: off
