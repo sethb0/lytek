@@ -1,5 +1,5 @@
 {
-  "name": "lytek",
+  "name": "@ven2/lytek",
   "description": "Web utilities for Exalted 2.5e",
   "version": "0.3.1",
   "private": true,
