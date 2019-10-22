@@ -3,10 +3,11 @@
 import Markdown from 'markdown-it';
 import MarkdownDeflist from 'markdown-it-deflist';
 import { mapState } from 'vuex';
+
+import index from '@ven2/refcards/data/index.yml';
 /* eslint-enable node/no-unpublished-import */
 
 import MfLoading from '../toplevel/loading.vue';
-import index from './data/index.yml';
 
 const markdownProcessor = new Markdown({ breaks: false })
   .use(MarkdownDeflist);
@@ -38,7 +39,7 @@ export default {
         const content = await Promise.all(
           entry.map((c) => import(
             /* webpackChunkName: "[request]", webpackPrefetch: true */
-            `./data/${c}.md`
+            `@ven2/refcards/data/${c}.md`
           ))
         );
         this.$nextTick(() => {
@@ -69,15 +70,13 @@ export default {
       <b-tab v-for="(item, n) of index" :key="item.title" :title="item.title"
         :active="n === currentTab" @click="selectTab(n)"
       >
-        <div :class="{ 'reference-contents': !loading }">
-          <mf-loading v-if="loading"></mf-loading>
-          <template v-else>
-            <b-card v-for="c of cards" :key="c.name" bg-variant="dark"
-              border-variant="info" class="reference-card"
-            >
-              <div v-html="c.html"></div>
-            </b-card>
-          </template>
+        <mf-loading v-if="loading"></mf-loading>
+        <div v-else class="reference-columns">
+          <b-card v-for="c of cards" :key="c.name" bg-variant="dark" text-variant="white"
+            border-variant="info" class="reference-card"
+          >
+            <div v-html="c.html"></div>
+          </b-card>
         </div>
       </b-tab>
     </b-tabs>
@@ -85,41 +84,25 @@ export default {
 </template>
 
 <style>
-.reference-contents {
-  display: flex;
-  flex-direction: column;
+.reference-columns {
+  column-width: 25rem;
+  column-gap: calc(4 * var(--spacer));
+  column-fill: balance;
 }
 
 .reference-card {
-  flex-basis: calc(100% - 4 * var(--spacer));
-  margin: calc(2 * var(--spacer));
+  break-inside: avoid-column;
+  margin-bottom: calc(4 * var(--spacer));
 }
 
 @media screen {
   .reference-container {
     height: var(--main-height);
-    overflow-y: hidden;
+    overflow-y: scroll;
   }
 
   .reference-container ul[role=tablist] {
-    height: var(--main-height) !important;
-  }
-
-  .reference-contents {
-    height: calc(var(--main-height) - 10 * var(--spacer));
-    overflow-y: auto;
-  }
-}
-
-@media screen and (min-width: 768px) {
-  .reference-contents {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-  }
-
-  .reference-card {
-    flex-basis: auto;
+    padding: calc(5 * var(--spacer));
   }
 }
 
@@ -128,8 +111,9 @@ export default {
     display: none;
   }
 
-  .reference-card {
-    page-break-inside: avoid;
+  .reference-container, .reference-card {
+    background-color: white;
+    color: black;
   }
 }
 </style>
