@@ -43,10 +43,7 @@ export default {
         this.cards = [];
         const entry = index[this.currentTab].cards;
         const content = await Promise.all(
-          entry.map((c) => import(
-            /* webpackChunkName: "[request]", webpackPrefetch: true */
-            `@ven2/refcards/data/${c}.md`
-          ))
+          entry.map((c) => import(/* webpackMode: "eager" */ `@ven2/refcards/data/${c}.md`))
         );
         this.$nextTick(() => {
           this.loading = false;
@@ -99,6 +96,10 @@ export default {
 .reference-card {
   break-inside: avoid-column;
   margin-bottom: calc(4 * var(--spacer));
+}
+
+.reference-card th, .reference-card td {
+  padding: 0.075rem calc(3 * var(--spacer)) 0.075rem 0px;
 }
 
 @media screen {
