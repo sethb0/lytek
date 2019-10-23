@@ -59,3 +59,6 @@ node_modules/
 
 # webpack output directory
 dist
+
+# nvm node version control
+.nvmrc

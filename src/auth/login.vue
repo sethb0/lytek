@@ -1,5 +1,5 @@
 <script>
-import MfLoading from '../toplevel/loading.vue';
+import MfLoading from '../shared/loading.vue';
 
 export default {
   inject: ['authService', 'authToast'],

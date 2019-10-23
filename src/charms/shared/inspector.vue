@@ -10,14 +10,16 @@ import { mapState } from 'vuex';
 
 import { formatDescription, getVariantName, spliceVariant } from './make-md';
 
-// eslint-disable-next-line unicorn/no-unsafe-regex
-const CHARM_ID_REGEXP = /^([^\s.]+\.[^\s.]+)(?:\.(\S+))?$/u;
-
+// Can't combine markdown processor for inspector with markdown processor for reference cards
+// because they have different breaks settings.
 const markdownProcessor = new Markdown({ breaks: true })
   .use(MarkdownAbbr)
   .use(MarkdownDeflist)
   .use(MarkdownSubscript)
   .use(MarkdownSuperscript);
+
+// eslint-disable-next-line unicorn/no-unsafe-regex
+const CHARM_ID_REGEXP = /^([^\s.]+\.[^\s.]+)(?:\.(\S+))?$/u;
 
 export default {
   props: {

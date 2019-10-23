@@ -4,6 +4,9 @@
   --body-margin: calc(var(--navbar-height) + var(--spacer) * 2);
   --main-height: calc(100vh - var(--body-margin));
 
+  --body-background-color: #{$body-bg};
+  --body-text-color: #{$body-color};
+
   --named-color-kobicha: #6b4423;
 
   --brand-font-family: "Pterra";

@@ -6,7 +6,7 @@ import { mapState } from 'vuex';
 /* eslint-enable node/no-unpublished-import */
 
 import { CharmsService, MissingDataError } from './service';
-import MfLoading from '../toplevel/loading.vue';
+import MfLoading from '../shared/loading.vue';
 
 export default {
   inject: ['authService', 'toaster'],

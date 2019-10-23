@@ -3,9 +3,9 @@
 import { mapGetters, mapState } from 'vuex';
 /* eslint-enable node/no-unpublished-import */
 
-import MfLoading from './loading.vue';
+import MfLoading from '../shared/loading.vue';
 import MfNavbar from './navbar.vue';
-import MfPrivate from '../auth/private.vue';
+import MfPrivate from './private.vue';
 
 export default {
   components: { MfLoading, MfNavbar, MfPrivate },
