@@ -41,6 +41,14 @@ module.exports = {
 
     config
       .module
+      .rule('misc-files')
+      .test(/\.pdf$/u)
+      .use('file-loader')
+      .loader('file-loader')
+      .options({ name: '[name].[contenthash:8].[ext]', outputPath: 'assets/misc' });
+
+    config
+      .module
       .rule('vue')
       .use('vue-loader')
       .loader('vue-loader')
