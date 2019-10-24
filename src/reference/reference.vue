@@ -2,7 +2,7 @@
 /* eslint-disable node/no-unpublished-import */
 import { mapState } from 'vuex';
 
-import index from '@ven2/refcards/data/index.yml';
+import rawIndex from '@ven2/refcards/data/index.yml';
 /* eslint-enable node/no-unpublished-import */
 
 import MfLoading from '../shared/loading.vue';
@@ -12,13 +12,25 @@ export default {
   inject: ['toaster'],
   components: { MfLoading, MfMarkdown },
   data () {
-    return { index, cards: [], loading: true };
+    return { cards: [], loading: true };
   },
   computed: {
     ...mapState('reference', ['currentTab']),
+    ...mapState('auth', ['capabilities']),
+    index () {
+      return rawIndex.filter(
+        (record) => !record.privilege || this.capabilities.includes(record.privilege)
+      );
+    },
   },
   watch: {
     currentTab () {
+      this.loadCurrentTab();
+    },
+    index (nuValue) {
+      if (this.currentTab >= nuValue.length) {
+        this.$store.commit('reference/currentTab', nuValue.length - 1);
+      }
       this.loadCurrentTab();
     },
   },
@@ -27,27 +39,34 @@ export default {
   },
   methods: {
     toc (card) {
-      const header = /^\s*#\s+(\S[^\n]*)$/mu.exec(card.markdown);
+      const header = /^#\s+(\S[^\n]*)$/mu.exec(card.markdown);
       return header ? header[1].trim() : card.name;
     },
     selectTab (tab) {
       this.$store.commit('reference/currentTab', tab);
     },
     async loadCurrentTab () {
+      if (this.currentTab >= this.index.length) {
+        console.warn('currentTab out of range, not loading'); // eslint-disable-line no-console
+        return false;
+      }
       try {
         this.loading = true;
         this.cards = [];
-        const entry = index[this.currentTab].cards;
+        const cardNames = this.index[this.currentTab].cards;
         const content = await Promise.all(
-          entry.map((c) => import(/* webpackMode: "eager" */ `@ven2/refcards/data/${c}.md`))
+          cardNames.map(
+            (name) => import(/* webpackMode: "eager" */ `@ven2/refcards/data/${name}.md`)
+          )
         );
         this.$nextTick(() => {
           this.loading = false;
           this.cards = content.map(({ 'default': markdown }, i) => ({
-            name: entry[i].replace(/\W+/gu, '-'),
+            name: cardNames[i].replace(/\W+/gu, '-'),
             markdown,
           }));
         });
+        return true;
       } catch (err) {
         this.$nextTick(() => {
           this.loading = false;
@@ -57,6 +76,8 @@ export default {
             toaster: this.toaster,
           });
         });
+        console.error(err); // eslint-disable-line no-console
+        return false;
       }
     },
   },
@@ -80,8 +101,8 @@ export default {
               </b-list-group-item>
             </b-list-group>
           </b-card>
-          <b-card v-for="c of cards" :key="c.name" bg-variant="dark"
-            border-variant="info" class="reference-card"
+          <b-card v-for="c of cards" :key="c.name" bg-variant="dark" border-variant="info"
+            class="reference-card"
           >
             <mf-markdown :id="c.name" :markdown="c.markdown"></mf-markdown>
           </b-card>
@@ -105,6 +126,7 @@ export default {
 
 .reference-card th, .reference-card td {
   padding: calc(0.3 * var(--spacer)) calc(3 * var(--spacer)) calc(0.3 * var(--spacer)) 0px;
+  vertical-align: top;
 }
 
 .reference-card hr {

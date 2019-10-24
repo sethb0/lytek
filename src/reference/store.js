@@ -9,8 +9,11 @@ export default {
         state.currentTab = 0;
         return;
       }
-      if (typeof value !== 'number' || value < 0 || Math.floor(value) !== value) {
+      if (typeof value !== 'number') {
         throw new TypeError('Invalid value type in mutation reference/currentTab');
+      }
+      if (value < 0 || value !== Math.floor(value)) {
+        throw new Error('Invalid value in mutation reference/currentTab');
       }
       state.currentTab = value;
     },

@@ -24,7 +24,7 @@ export default {
       return state.displayName || state.name;
     },
     isAdmin (state) {
-      return state.capabilities.includes('admin') && !state.disableAdmin;
+      return state.capabilities.includes('admin');
     },
     isGm (state) {
       return state.capabilities.includes('gm');
@@ -37,6 +37,12 @@ export default {
     disableAdmin (state, value) {
       if (typeof value !== 'boolean') {
         throw new TypeError('Incorrect value type in mutation auth/disableAdmin');
+      }
+      if (!value && state.disableAdmin) {
+        throw new Error('Admin privileges cannot be restored in mutation auth/disableAdmin');
+      }
+      if (value) {
+        state.capabilities = state.capabilities.filter((x) => x !== 'admin');
       }
       state.disableAdmin = value;
     },

@@ -9,7 +9,7 @@ import MarkdownSuperscript from 'markdown-it-sup';
 
 // Can't combine markdown processor for inspector with markdown processor for reference cards
 // because they have different breaks settings.
-const markdownProcessor = new Markdown({ breaks: false })
+const markdownProcessor = new Markdown({ breaks: true })
   .use(MarkdownAbbr)
   .use(MarkdownDeflist)
   .use(MarkdownSubscript)
@@ -55,10 +55,13 @@ export default {
         console.warn('node not found in markdown.vue#processMarkdown');
         return;
       }
-      if (node.childElementCount) {
-        node.removeChild(node.firstElementChild);
+      while (node.firstChild) {
+        node.removeChild(node.firstChild);
       }
-      node.append(doc.body);
+      const b = doc.body;
+      while (b.firstChild) {
+        node.append(b.firstChild);
+      }
     },
   },
 };
