@@ -189,7 +189,7 @@ export default {
   --visualizer-edge-width: 1px;
 }
 
-.abyssal {
+.abyssal, .ghosts {
   --visualizer-charm-color: darkgray;
   --visualizer-cluster-color: gainsboro;
 }

@@ -409,6 +409,8 @@ export function makeGv (charms, select, options = {}) {
 export function getTitle (type, group) {
   type = unKebab(type);
   switch (type) {
+  case 'Ghosts':
+    return group;
   case 'Infernal':
     if (group === 'Heretical') {
       return 'Heretical Charms';
