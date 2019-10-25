@@ -69,6 +69,7 @@ export function getVariantName (charmName, variantName) {
 
 function reformatLineBreaks (description) {
   description = (description || '')
+    .replace(/\|\n\n/gu, '|\n\n\u00A0\n\n')
     .replace(/\n([^-|])/gu, '\n\n$1')
     .replace(/(\n- [^\n]+)\n\n([^-])/gu, '$1\n$2')
     .replace(/\n+$/u, '');

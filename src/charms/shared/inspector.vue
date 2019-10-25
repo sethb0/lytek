@@ -84,33 +84,38 @@ export default {
 </script>
 
 <template>
-  <div class="body">
-    <div class="hstrut"></div>
+  <div class="inspector-body">
+    <div class="inspector-hstrut"></div>
     <!-- eslint-disable-next-line vue/no-v-html -->
-    <div v-html="html" class="markdown"></div>
+    <div v-html="html" class="inspector-markdown"></div>
   </div>
 </template>
 
-<style scoped>
-.body {
+<style>
+.inspector-body {
   font-size: 1.1rem;
   min-width: var(--inspector-min-width);
   max-width: var(--inspector-max-width);
 }
 
-.markdown {
+.inspector-markdown {
   padding: calc(3 * var(--spacer)) calc(4 * var(--spacer));
 }
 
+.inspector-markdown th, .inspector-markdown td {
+  padding: calc(0.3 * var(--spacer)) calc(3 * var(--spacer)) calc(0.3 * var(--spacer)) 0px;
+  vertical-align: top;
+}
+
 @media screen {
-  .body {
+  .inspector-body {
     background-color: var(--inspector-background-color);
     color: var(--inspector-text-color);
   }
 }
 
 @media screen and (min-width: 768px) {
-  .hstrut {
+  .inspector-hstrut {
     width: var(--inspector-min-width);
   }
 }
