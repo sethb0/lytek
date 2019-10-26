@@ -389,10 +389,17 @@ class Builder {
     if (charm.exalt?.endsWith(' Martial Arts')) {
       keyTrait = keyTrait === 'Lunar Hero Style' ? 'Dexterity' : 'Martial Arts';
     }
-    const minTrait = p.traits && p.traits[keyTrait];
+    const t = p.traits;
+    const minTrait = t && (t[keyTrait]
+      || Math.max(
+        t.Compassion || 0,
+        t.Conviction || 0,
+        t.Temperance || 0,
+        t.Valor || 0,
+      ));
     if (minEssence || minTrait) {
-      const t = minTrait ? `${minTrait}/` : '';
-      name = `${name} [${t}${minEssence}]`;
+      const l = minTrait ? `${minTrait}/` : '';
+      name = `${name} [${l}${minEssence}]`;
     }
     return name;
   }
