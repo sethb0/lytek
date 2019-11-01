@@ -64,7 +64,7 @@ export default {
     initialized (state, value) {
       if (!value) {
         throw new Error(
-          'Cannot invoke mutation auth/initialized with a falsy value after startup'
+          'Cannot invoke mutation auth/initialized with a falsy value after startup',
         );
       }
       if (typeof value !== 'boolean') {

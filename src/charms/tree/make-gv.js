@@ -210,7 +210,7 @@ class Builder {
                 for (const v of p['other excellencies']) {
                   this.pushSpecialDependency(
                     child,
-                    this.getExcellenciesNode(v.threshold, v.variant)
+                    this.getExcellenciesNode(v.threshold, v.variant),
                   );
                 }
               }
@@ -241,7 +241,7 @@ class Builder {
             for (const v of p['other excellencies']) {
               this.pushSpecialDependency(
                 node,
-                this.getExcellenciesNode(v.threshold, v.variant)
+                this.getExcellenciesNode(v.threshold, v.variant),
               );
             }
           }

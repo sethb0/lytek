@@ -118,7 +118,7 @@ export default {
     },
     otherStyles () {
       return this.groups.filter(
-        (x) => !x.endsWith(' Dragon Style') && !SPECIFIED_MARTIAL_ARTS_GROUPS.includes(x)
+        (x) => !x.endsWith(' Dragon Style') && !SPECIFIED_MARTIAL_ARTS_GROUPS.includes(x),
       ).sort();
     },
     nonStyleGroups () {

@@ -74,7 +74,7 @@ export default {
         if (charm && charm.type !== 'proxy') {
           const variant = v && charm.variants?.find((x) => x.id === v);
           this.html = markdownProcessor.render(
-            formatDescription(charm, { variant, group: this.charmGroup, dict: this.idDict })
+            formatDescription(charm, { variant, group: this.charmGroup, dict: this.idDict }),
           );
         }
       }
