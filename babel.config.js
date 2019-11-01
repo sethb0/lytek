@@ -27,10 +27,15 @@ const serverPresets = [
 ];
 
 const plugins = [
+  '@babel/plugin-proposal-do-expressions',
   '@babel/plugin-proposal-function-bind',
   '@babel/plugin-proposal-logical-assignment-operators',
+  '@babel/plugin-proposal-throw-expressions',
   ['@babel/plugin-proposal-nullish-coalescing-operator', { loose: true }],
   ['@babel/plugin-proposal-optional-chaining', { loose: true }],
+  // These two *must* have the same value for "loose"
+  ['@babel/plugin-proposal-class-properties', { loose: true }],
+  ['@babel/plugin-proposal-private-methods', { loose: true }],
 ];
 
 module.exports = {
