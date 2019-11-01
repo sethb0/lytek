@@ -1,28 +1,10 @@
-export class CharmsServiceError extends Error {
-  constructor (message) {
-    super(message);
-    this.name = 'CharmsServiceError';
-  }
-}
+import { ServiceError, ServerError, SchemaError, load, loadStringArray }
+  from '../shared/service-helpers';
 
-export class MissingDataError extends CharmsServiceError {
+export class MissingDataError extends ServiceError {
   constructor (message) {
     super(message);
     this.name = 'MissingDataError';
-  }
-}
-
-export class ServerError extends CharmsServiceError {
-  constructor (message) {
-    super(message);
-    this.name = 'ServerError';
-  }
-}
-
-export class SchemaError extends ServerError {
-  constructor (message) {
-    super(message);
-    this.name = 'SchemaError';
   }
 }
 
@@ -74,60 +56,34 @@ export class CharmsService {
   }
 
   async _loadTypes () {
-    const a = await this._loadStringArray('charms');
+    const a = await loadStringArray('charms', await this._getToken());
     return Object.fromEntries(a.map((x) => [x, null]));
   }
 
   async _loadGroups (type) {
-    const a = await this._loadStringArray(`charms/${encodeURIComponent(type)}`);
+    const a = await loadStringArray(
+      `charms/${encodeURIComponent(type)}`,
+      await this._getToken(),
+    );
     return Object.fromEntries(a.map((x) => [x, null]));
   }
 
   async _loadCharms (type, group) {
     const api = `charms/${encodeURIComponent(type)}/${encodeURIComponent(group)}`;
-    const json = await this._load(api);
+    const json = await load(api, await this._getToken());
     if (!json || !Array.isArray(json) || !json.every(
-      (y) => y && typeof y === 'object' && !Array.isArray(y) && y.id && typeof y.id === 'string'
+      (y) => y && typeof y === 'object' && !Array.isArray(y)
+        && y.id && typeof y.id === 'string',
     )) {
       throw new SchemaError(`API ${decodeURI(api)} returned invalid data`);
     }
     return json;
   }
 
-  async _loadStringArray (api) {
-    const json = await this._load(api);
-    if (!json || !Array.isArray(json) || !json.every((y) => y && typeof y === 'string')) {
-      throw new SchemaError(`API ${decodeURI(api)} returned invalid data`);
-    }
-    return json;
-  }
-
-  async _load (api) {
+  async _getToken () {
     try {
-      const token = await this._getAccessToken('read:charms');
-      const response = await window.fetch(`${window.location.origin}/api/${api}`, {
-        mode: 'same-origin',
-        credentials: 'omit',
-        cache: 'no-store',
-        redirect: 'error',
-        keepalive: true,
-        headers: { Accept: 'application/json', Authorization: `Bearer ${token}` },
-      });
-      const json = await response.json();
-      if (!response.ok) {
-        let msg = `Server returned error ${response.status}`;
-        // eslint-disable-next-line camelcase
-        const e = json?.error_description || json?.error || json?.error_code;
-        if (e) {
-          msg = `${msg}: ${e}`;
-        }
-        throw new ServerError(msg);
-      }
-      return json;
+      return this._getAccessToken('read:charms');
     } catch (err) {
-      if (err instanceof CharmsServiceError) {
-        throw err;
-      }
       const e = new ServerError(err.message);
       e.originalError = err;
       throw e;
