@@ -19,7 +19,7 @@ export default {
     ...mapState('auth', ['capabilities']),
     index () {
       return rawIndex.filter(
-        (record) => !record.privilege || this.capabilities.includes(record.privilege)
+        (record) => !record.privilege || this.capabilities.includes(record.privilege),
       );
     },
   },
@@ -56,8 +56,8 @@ export default {
         const cardNames = this.index[this.currentTab].cards;
         const content = await Promise.all(
           cardNames.map(
-            (name) => import(/* webpackMode: "eager" */ `@ven2/refcards/data/${name}.md`)
-          )
+            (name) => import(/* webpackMode: "eager" */ `@ven2/refcards/data/${name}.md`),
+          ),
         );
         this.$nextTick(() => {
           this.loading = false;

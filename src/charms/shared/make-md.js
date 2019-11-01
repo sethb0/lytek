@@ -49,7 +49,7 @@ ${reformatLineBreaks(variant.description)}`;
   }
   const term = charm.type === 'knack' ? 'Knacks' : 'Charms';
   details.push(
-    `\n**Prerequisite ${term}:** ${formatPrerequisiteCharms(prereqs, { dict, group })}`
+    `\n**Prerequisite ${term}:** ${formatPrerequisiteCharms(prereqs, { dict, group })}`,
   );
   return `## ${name}
 **Minima:** ${minima.length ? minima.join(', ') : '(see below)'}${details.join('')}
@@ -93,7 +93,7 @@ function mergePrerequisites (...prereqs) {
   }
   const charmsMerger = Object.fromEntries(
     prereqs.flatMap((p) => p.charms || [])
-      .map((charm) => [spliceVariant(charm.id, charm.variant), charm.count])
+      .map((charm) => [spliceVariant(charm.id, charm.variant), charm.count]),
   );
   const groups = mergeGroups(prereqs.flatMap((p) => p.groups || []), charmsMerger);
   const charms = Object.entries(charmsMerger).map(([k, v]) => {
@@ -159,7 +159,7 @@ function formatPrerequisiteCharms (
   }
   if (charms) {
     items.push(...charms.map(
-      (x) => countedCharms(dict[spliceVariant(x.id, x.variant)], x.count)
+      (x) => countedCharms(dict[spliceVariant(x.id, x.variant)], x.count),
     ));
   }
   if (groups) {
@@ -168,7 +168,7 @@ function formatPrerequisiteCharms (
         ? 'either'
         : `any ${cardinal(threshold)} of`;
       const names = cc.map(
-        ({ id, variant, count }) => countedCharms(dict[spliceVariant(id, variant)], count)
+        ({ id, variant, count }) => countedCharms(dict[spliceVariant(id, variant)], count),
       );
       const last = names.pop();
       items.push(`${x} ${names.join(', ')} or ${last}`);
