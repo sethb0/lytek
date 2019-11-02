@@ -104,7 +104,7 @@ export default {
           <b-card v-for="c of cards" :key="c.name" bg-variant="dark" border-variant="info"
             class="reference-card"
           >
-            <mf-markdown :id="c.name" :markdown="c.markdown"></mf-markdown>
+            <mf-markdown :node-id="c.name" :markdown="c.markdown"></mf-markdown>
           </b-card>
         </div>
       </b-tab>

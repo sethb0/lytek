@@ -21,6 +21,10 @@ export default {
       type: String,
       required: true,
     },
+    nodeId: {
+      type: String,
+      'default': '',
+    },
   },
   data () {
     return { html: '' };
@@ -61,6 +65,9 @@ export default {
       const b = doc.body;
       while (b.firstChild) {
         node.append(b.firstChild);
+      }
+      if (this.nodeId) {
+        (node.firstChild || node).setAttribute('id', this.nodeId);
       }
     },
   },
