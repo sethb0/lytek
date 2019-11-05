@@ -1,5 +1,6 @@
 /* eslint require-atomic-updates: off */
 import { unKebab } from './utils';
+import { COLLECTION as REF_COLLECTION } from './reference-api';
 
 class ParameterError extends Error {
   constructor (message) {
@@ -8,7 +9,9 @@ class ParameterError extends Error {
   }
 }
 
-const NON_CHARM_COLLECTIONS = ['proxies', 'dice', 'characters', 'chronicles'];
+const NON_CHARM_COLLECTIONS = [
+  'proxies', REF_COLLECTION,
+];
 
 export const charmTypes = wrap(async (ctx) => {
   const data = await charmTypesLoader(ctx.mongo);

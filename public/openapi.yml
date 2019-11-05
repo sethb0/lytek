@@ -2,7 +2,7 @@ openapi: 3.0.2
 info:
   title: Lytek
   description: Web utilities for _Exalted_ 2.5e
-  version: 0.1.0
+  version: 0.2.0
   contact:
     name: Seth Blumberg
     email: sethb@pobox.com
@@ -30,6 +30,20 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/GroupId'
+    ReferenceTitleParameter:
+      name: title
+      in: path
+      description: Title of tab for which to retrieve card list
+      required: true
+      schema:
+        $ref: '#/components/schemas/ReferenceTitle'
+    ReferenceIdParameter:
+      name: card
+      in: path
+      description: ID of reference card for which to retrieve full text
+      required: true
+      schema:
+        $ref: '#/components/schemas/ReferenceId'
   responses:
     AuthenticateResponse:
       description: Response indicating that no suitable authentication token was presented
@@ -60,6 +74,17 @@ components:
       description: The unique identifier of a Charm type
       type: string
       pattern: '^\w+(-\w+)*$'
+    ReferenceTitle:
+      description: The unique identifier of a reference tab, which is also the human-readable tab title
+      type: string
+      pattern: '^\S+( \S+)*$'
+    ReferenceId:
+      description: The unique identifier of a reference card (which may appear on multiple tabs)
+      type: string
+      pattern: '^[a-z]+(-[a-z]+)*(:[a-z]+(-[a-z]+)*)*$'
+    Markdown:
+      description: Human-readable free text in Markdown format
+      type: string
 paths:
   /charms:
     get:
@@ -95,11 +120,14 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/GroupId'
+                minItems: 1
         '400':
           $ref: '#/components/responses/ErrorResponse'
         '401':
           $ref: '#/components/responses/AuthenticateResponse'
         '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
           $ref: '#/components/responses/ErrorResponse'
         '500':
           $ref: '#/components/responses/ErrorResponse'
@@ -118,11 +146,14 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/CharmData'
+                minItems: 1
         '400':
           $ref: '#/components/responses/ErrorResponse'
         '401':
           $ref: '#/components/responses/AuthenticateResponse'
         '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
           $ref: '#/components/responses/ErrorResponse'
         '500':
           $ref: '#/components/responses/ErrorResponse'
@@ -130,6 +161,18 @@ paths:
     parameters:
       - $ref: '#/components/parameters/TypeIdParameter'
       - $ref: '#/components/parameters/GroupIdParameter'
+      - name: types
+        in: query
+        description: Flag requesting return of type list data if present and non-empty
+        required: false
+        schema:
+          type: string
+      - name: groups
+        in: query
+        description: Flag requesting return of group list data if present and non-empty
+        required: false
+        schema:
+          type: string
     get:
       description: Returns type list, group list and Charm data all at once for efficient startup
       responses:
@@ -144,19 +187,150 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/CharmData'
+                    minItems: 1
                   groups:
                     type: array
                     items:
                       $ref: '#/components/schemas/GroupId'
+                    minItems: 1
                   types:
                     type: array
                     items:
                       $ref: '#/components/schemas/TypeId'
+                    minItems: 1
+                additionalProperties: false
+                required: ['charms']
         '400':
           $ref: '#/components/responses/ErrorResponse'
         '401':
           $ref: '#/components/responses/AuthenticateResponse'
         '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/ErrorResponse'
+  /reference/tabs:
+    get:
+      description: Returns all known reference tab titles
+      responses:
+        '200':
+          description: A list of reference tab titles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReferenceTitle'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/AuthenticateResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/ErrorResponse'
+  /reference/cards:
+    get:
+      description: Returns all known reference card IDs
+      responses:
+        '200':
+          description: A list of reference card IDs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReferenceId'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/AuthenticateResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/ErrorResponse'
+  /reference/index/{title}:
+    parameters:
+      - $ref: '#/components/parameters/ReferenceTitleParameter'
+    get:
+      description: Returns all reference card IDs for a given tab
+      responses:
+        '200':
+          description: A list of reference card IDs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReferenceId'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/AuthenticateResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/ErrorResponse'
+  /reference/card/{card}:
+    parameters:
+      - $ref: '#/components/parameters/ReferenceIdParameter'
+    get:
+      description: Returns the full text of a given reference card
+      responses:
+        '200':
+          description: >-
+            Human-readable free text in Markdown format, optionally encapsulated as JSON
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Markdown'
+            text/markdown:
+              schema:
+                $ref: '#/components/schemas/Markdown'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/AuthenticateResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '406':
+          $ref: '#/components/responses/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/ErrorResponse'
+  /reference/tab/{title}:
+    parameters:
+      - $ref: '#/components/parameters/ReferenceTitleParameter'
+    get:
+      description: Returns the IDs and text of all reference cards for a given tab
+      responses:
+        '200':
+          description: A list of card IDs, each with accompanying Markdown text
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      $ref: '#/components/schemas/ReferenceId'
+                    text:
+                      $ref: '#/components/schemas/Markdown'
+                  additionalProperties: false
+                  required: ['id', 'text']
+                minItems: 1
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/AuthenticateResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
           $ref: '#/components/responses/ErrorResponse'
         '500':
           $ref: '#/components/responses/ErrorResponse'
