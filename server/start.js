@@ -13,6 +13,8 @@ import winston from 'winston';
 import { APP_NAME, AUDIENCE, CLIENT_ID, TENANT_DOMAIN } from './auth-constants';
 import { charmTypes as charmTypesAPI, charmGroups as charmGroupsAPI, charmData as charmDataAPI,
   quick as charmQuickDataAPI } from './charms-api';
+import { tabs as refTabsAPI, cards as refCardsAPI, index as refIndexAPI,
+  singleCard as refSingleCardAPI, quick as refQuickTabAPI } from './reference-api';
 import { auth0Jwt as jwt } from './auth0-jwt';
 import { requestLogger } from './request-logger';
 
@@ -112,6 +114,7 @@ async function server (mode, { BOT_API_TOKEN, KOA_SECRET, MONGODB_URI }) {
         clientId: CLIENT_ID,
         expose: mode !== 'production',
       }),
+      augmentAuthState,
       router(
         { prefix: '/api' },
         (rr) => {
@@ -119,6 +122,11 @@ async function server (mode, { BOT_API_TOKEN, KOA_SECRET, MONGODB_URI }) {
           rr.all('/charms/:type', charmGroupsAPI);
           rr.all('/charms/:type/:group', charmDataAPI);
           rr.all('/charms/_quick/:type/:group', charmQuickDataAPI);
+          rr.all('/reference/tabs', refTabsAPI);
+          rr.all('/reference/cards', refCardsAPI);
+          rr.all('/reference/index/:title', refIndexAPI);
+          rr.all('/reference/card/:card', refSingleCardAPI);
+          rr.all('/reference/tab/:title', refQuickTabAPI);
         },
       ),
       unrecognizedAPI,
@@ -172,6 +180,21 @@ function checkScope (scopes) { // eslint-disable-line no-unused-vars
     }
     await next();
   };
+}
+
+async function augmentAuthState (ctx, next) {
+  if (!ctx.state) {
+    ctx.state = {};
+  }
+  if (!ctx.state.auth) {
+    ctx.state.auth = {};
+  }
+  const chronicles = ctx.state.auth[`${AUDIENCE}/chronicles`] || {};
+  ctx.state.auth.player = Object.keys(chronicles);
+  ctx.state.auth.gm = Object.entries(chronicles)
+    .filter(([, v]) => v)
+    .map(([k]) => k);
+  await next();
 }
 
 // function checkBotToken (token) {
