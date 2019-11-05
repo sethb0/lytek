@@ -1,41 +1,41 @@
 /* eslint require-atomic-updates: off */
-import { unKebab } from './utils';
 import { COLLECTION as REF_COLLECTION } from './reference-api';
-
-class ParameterError extends Error {
-  constructor (message) {
-    super(message);
-    this.name = 'ParameterError';
-  }
-}
+import { NotFoundError, ParameterError, discard, identity, unKebab, wrap } from './utils';
 
 const NON_CHARM_COLLECTIONS = [
   'proxies', REF_COLLECTION,
 ];
+const READ_PERMISSION = 'read:charms';
 
 export const charmTypes = wrap(async (ctx) => {
   const data = await charmTypesLoader(ctx.mongo);
   const body = charmTypesPostprocessor(data, ctx.params);
   ctx.status = 200;
   ctx.body = body;
-});
+}, READ_PERMISSION);
 
 export const charmGroups = wrap(async (ctx) => {
   const loader = getCharmGroupsLoader(ctx.params);
   const data = await loader(ctx.mongo);
   const body = charmGroupsPostprocessor(data, ctx.params);
+  if (!body.length) {
+    throw new NotFoundError('type not found');
+  }
   ctx.status = 200;
   ctx.body = body;
-});
+}, READ_PERMISSION);
 
 export const charmData = wrap(async (ctx) => {
   const { loaders, postprocessor } = getCharmDataLoadersAndPostprocessor(ctx.params);
   const { mongo } = ctx;
   const data = await Promise.all(loaders.map((f) => f(mongo)));
-  const body = postprocessor([].concat(...data), ctx.params);
+  const body = postprocessor(data.flat(1), ctx.params);
+  if (!body.length) {
+    throw new NotFoundError('type or group not found');
+  }
   ctx.status = 200;
   ctx.body = body;
-});
+}, READ_PERMISSION);
 
 export const quick = wrap(async (ctx) => {
   const { types: sendTypes, groups: sendGroups } = ctx.query || {};
@@ -49,49 +49,24 @@ export const quick = wrap(async (ctx) => {
   const { mongo } = ctx;
   const data = await Promise.all(loaders.map((f) => f(mongo)));
   const body = {};
+  const groups = charmGroupsPostprocessor(data[1], ctx.params);
+  if (!groups.length) {
+    throw new NotFoundError('type not found');
+  }
+  const charms = charmDataPostprocessor(data.slice(2).flat(1), ctx.params);
+  if (!charms.length) {
+    throw new NotFoundError('group not found');
+  }
   if (sendTypes) {
     body.types = charmTypesPostprocessor(data[0], ctx.params);
   }
   if (sendGroups) {
-    body.groups = charmGroupsPostprocessor(data[1], ctx.params);
+    body.groups = groups;
   }
-  body.charms = charmDataPostprocessor([].concat(...data.slice(2)), ctx.params);
+  body.charms = charms;
   ctx.status = 200;
   ctx.body = body;
-});
-
-function wrap (f) {
-  return {
-    async get (ctx) {
-      const { state = {} } = ctx;
-      const { auth = {} } = state;
-      const { permissions = [] } = auth;
-      if (permissions.includes('read:charms')) {
-        try {
-          await f(ctx);
-        } catch (err) {
-          if (err instanceof ParameterError) {
-            ctx.status = 400;
-            ctx.body = { error: 'invalid_parameter' };
-            return;
-          }
-          ctx.status = 500;
-          const body = { error: 'database_error' };
-          if (ctx.mode === 'production') {
-            ctx.logger.error(err.message);
-          } else {
-            // eslint-disable-next-line camelcase
-            body.error_description = err.message;
-          }
-          ctx.body = body;
-        }
-      } else {
-        ctx.status = 403;
-        ctx.body = { error: 'not_permitted' };
-      }
-    },
-  };
-}
+}, READ_PERMISSION);
 
 function charmTypesLoader (mongo) {
   return mongo
@@ -198,12 +173,4 @@ function renameCharm (charm, group, variant) {
     return charm.name.replace(/\{.*\}/u, group);
   }
   return `${charm.name}: ${group}`;
-}
-
-function identity (x) {
-  return x;
-}
-
-function discard () {
-  // return undefined;
 }
