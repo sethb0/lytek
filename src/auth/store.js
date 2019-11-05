@@ -7,6 +7,7 @@ export default {
     inProgress: false,
     initialized: false,
     capabilities: [],
+    chronicles: {},
     displayName: '',
     email: '',
     name: '',
@@ -31,6 +32,14 @@ export default {
     },
     isUser (state) {
       return state.capabilities.includes('user');
+    },
+    allChronicles (state) {
+      return Object.keys(state.chronicles);
+    },
+    gmChronicles (state) {
+      return Object.entries(state.chronicles)
+        .filter(([, v]) => v)
+        .map(([k]) => k);
     },
   },
   mutations: {
@@ -83,6 +92,15 @@ export default {
         if (!value.capabilities.every((x) => typeof x === 'string')) {
           throw new TypeError('Incorrect element type (capabilities) in mutation auth/user');
         }
+        if (
+          !value.chronicles || typeof value.chronicles !== 'object'
+            || Array.isArray(value.chronicles)
+        ) {
+          throw new TypeError('Incorrect value type (chronicles) in mutation auth/user');
+        }
+        if (!Object.values(value.chronicles).every((x) => typeof x === 'boolean')) {
+          throw new TypeError('Incorrect entry value type (chronicles) in mutation auth/user');
+        }
         if (typeof value.displayName !== 'string') {
           throw new TypeError('Incorrect value type (displayName) in mutation auth/user');
         }
@@ -99,6 +117,7 @@ export default {
           throw new TypeError('Incorrect value type (sub) in mutation auth/user');
         }
         state.capabilities = value.capabilities.slice();
+        state.chronicles = { ...value.chronicles };
         state.displayName = value.displayName;
         state.email = value.email;
         state.name = value.name;
@@ -107,6 +126,7 @@ export default {
         state.disableAdmin = false;
       } else {
         state.capabilities = [];
+        state.chronicles = {};
         state.displayName = '';
         state.email = '';
         state.name = '';
@@ -135,6 +155,7 @@ export default {
       payload ||= {};
       commit('user', {
         capabilities: payload[`${CLAIM_NAMESPACE}/capabilities`] || [],
+        chronicles: payload[`${CLAIM_NAMESPACE}/chronicles`] || {},
         displayName: payload[`${CLAIM_NAMESPACE}/displayName`] || '',
         email: payload.email_verified ? payload.email || '' : '',
         name: payload.nickname || '',
