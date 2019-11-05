@@ -10,30 +10,25 @@ import router from 'koa-simple-router';
 import tls from 'tls';
 import winston from 'winston';
 
-// import { dummy as dummyAPI } from './dummy-api';
+import { APP_NAME, AUDIENCE, CLIENT_ID, TENANT_DOMAIN } from './auth-constants';
 import { charmTypes as charmTypesAPI, charmGroups as charmGroupsAPI, charmData as charmDataAPI,
   quick as charmQuickDataAPI } from './charms-api';
 import { auth0Jwt as jwt } from './auth0-jwt';
 import { requestLogger } from './request-logger';
 
-const APP_NAME = 'lytek';
-const CLIENT_ID = 'qKmlCFgdNi02xeV33lvtMWJ3H1cLFIgV';
 const DEFAULT_CACHE_CONTROL = 'public, max-age=60';
 const LONG_TERM_CACHE_CONTROL = 'public, max-age=31536000, immutable';
 const STATIC_DIR = path.resolve(__dirname, '..', 'dist');
 
 const DEFAULT_PORT = 5000;
 
-async function server (mode, { BOT_API_TOKEN, /* DATABASE_URL, */ KOA_SECRET, MONGODB_URI }) {
+async function server (mode, { BOT_API_TOKEN, KOA_SECRET, MONGODB_URI }) {
   if (!mode) {
     throw new Error('missing mode');
   }
   if (!BOT_API_TOKEN) {
     throw new Error('missing configuration parameter BOT_API_TOKEN');
   }
-  // if (!DATABASE_URL) {
-  //   throw new Error('missing configuration parameter DATABASE_URL');
-  // }
   if (!KOA_SECRET) {
     throw new Error('missing configuration parameter KOA_SECRET');
   }
@@ -73,7 +68,7 @@ async function server (mode, { BOT_API_TOKEN, /* DATABASE_URL, */ KOA_SECRET, MO
     sslCA: tls.rootCertificates,
     reconnectTries: 5,
     promiseLibrary: Promise,
-    appname: app.name,
+    appname: APP_NAME,
     useNewUrlParser: true,
     useUnifiedTopology: true,
     validateOptions: true,
@@ -112,8 +107,8 @@ async function server (mode, { BOT_API_TOKEN, /* DATABASE_URL, */ KOA_SECRET, MO
     r.all(
       '/api/*',
       jwt({
-        tenant: 'mfllc',
-        audience: `https://${APP_NAME}.sharpcla.ws`,
+        tenant: TENANT_DOMAIN,
+        audience: AUDIENCE,
         clientId: CLIENT_ID,
         expose: mode !== 'production',
       }),

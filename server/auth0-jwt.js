@@ -13,7 +13,7 @@ export class AzpError extends JsonWebTokenError {
 export function auth0Jwt (options = {}) {
   const { tenant, audience, expose, clientId } = options;
   if (!tenant) {
-    throw new Error('no Auth0 tenant name specified');
+    throw new Error('no Auth0 tenant URL specified');
   }
   if (!audience) {
     throw new Error('no audience URI specified');
@@ -28,9 +28,9 @@ export function auth0Jwt (options = {}) {
       secret: koaJwtSecret({
         cache: true,
         rateLimit: true,
-        jwksUri: `https://${tenant}.auth0.com/.well-known/jwks.json`,
+        jwksUri: `https://${tenant}/.well-known/jwks.json`,
       }),
-      issuer: `https://${tenant}.auth0.com/`,
+      issuer: `https://${tenant}/`,
       algorithms: ['RS256'],
       audience,
     }),
