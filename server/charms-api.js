@@ -1,9 +1,9 @@
 /* eslint require-atomic-updates: off */
-import { COLLECTION as REF_COLLECTION } from './reference-api';
+import { COLLECTIONS as REF_COLLECTIONS } from './reference-api';
 import { NotFoundError, ParameterError, discard, identity, unKebab, wrap } from './utils';
 
 const NON_CHARM_COLLECTIONS = [
-  'proxies', REF_COLLECTION,
+  'proxies', ...REF_COLLECTIONS,
 ];
 const READ_PERMISSION = 'read:charms';
 

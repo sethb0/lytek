@@ -13,7 +13,7 @@ import winston from 'winston';
 import { APP_NAME, AUDIENCE, CLIENT_ID, TENANT_DOMAIN } from './auth-constants';
 import { charmTypes as charmTypesAPI, charmGroups as charmGroupsAPI, charmData as charmDataAPI,
   quick as charmQuickDataAPI } from './charms-api';
-import { tabs as refTabsAPI, cards as refCardsAPI, index as refIndexAPI,
+import { tabs as refTabsAPI, cards as refCardsAPI, index as refIndexAPI, order as refOrderAPI,
   singleCard as refSingleCardAPI, quick as refQuickTabAPI } from './reference-api';
 import { auth0Jwt as jwt } from './auth0-jwt';
 import { requestLogger } from './request-logger';
@@ -127,6 +127,7 @@ async function server (mode, { BOT_API_TOKEN, KOA_SECRET, MONGODB_URI }) {
           rr.all('/reference/index/:title', refIndexAPI);
           rr.all('/reference/card/:card', refSingleCardAPI);
           rr.all('/reference/tab/:title', refQuickTabAPI);
+          rr.all('/reference/order/:title', refOrderAPI);
         },
       ),
       unrecognizedAPI,

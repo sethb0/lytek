@@ -1,5 +1,6 @@
 /* eslint require-atomic-updates: off */
 import { MongoError } from 'mongodb';
+import { BatchError } from 'spex';
 
 export class NotAcceptedError extends Error {
   constructor (message) {
@@ -63,7 +64,9 @@ export function wrap (f, perm) {
             logFunction = ::ctx.logger.warn;
           } else {
             ctx.status = 500;
-            errorType = err instanceof MongoError ? 'database_error' : 'internal_error';
+            errorType = err instanceof MongoError || err instanceof BatchError
+              ? 'database_error'
+              : 'internal_error';
             logFunction = ::ctx.logger.error;
           }
           const body = { error: errorType };

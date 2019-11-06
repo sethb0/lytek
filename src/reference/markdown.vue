@@ -26,9 +26,6 @@ export default {
       'default': '',
     },
   },
-  data () {
-    return { html: '' };
-  },
   watch: {
     markdown () {
       this.processMarkdown().catch(console.error);
@@ -48,7 +45,7 @@ export default {
           const href = node.getAttribute('href');
           if (href) {
             const { 'default': asset }
-              = await import(/* webpackMode: "eager" */ `@ven2/refcards/assets/${href}`);
+              = await import(/* webpackMode: "eager" */ `./assets/${href}`);
             node.setAttribute('href', asset);
             node.setAttribute('download', href.replace(/^.*\//u, ''));
           }
@@ -56,7 +53,7 @@ export default {
       }
       const node = this.$refs.content;
       if (!node) {
-        console.warn('node not found in markdown.vue#processMarkdown');
+        console.warn('content container node not found in markdown.vue#processMarkdown');
         return;
       }
       while (node.firstChild) {
@@ -67,7 +64,15 @@ export default {
         node.append(b.firstChild);
       }
       if (this.nodeId) {
-        (node.firstChild || node).setAttribute('id', this.nodeId);
+        const target = node.firstChild;
+        target.setAttribute('id', this.nodeId);
+        target.classList.add('markdown-clickable');
+        target.innerHTML
+          = `<span class="markdown-clickable-affordance">${target.innerHTML}</span>`;
+        target.addEventListener('click', (evt) => {
+          evt.preventDefault();
+          this.$emit('click');
+        });
       }
     },
   },
@@ -77,3 +82,14 @@ export default {
 <template>
   <div ref="content"></div>
 </template>
+
+<style>
+.markdown-clickable {
+  cursor: pointer;
+}
+
+.markdown-clickable-affordance::after {
+  content: '\2002\25B5';
+  font-size: 1.4rem;
+}
+</style>

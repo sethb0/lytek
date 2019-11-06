@@ -2,7 +2,7 @@ openapi: 3.0.2
 info:
   title: Lytek
   description: Web utilities for _Exalted_ 2.5e
-  version: 0.2.0
+  version: 0.3.0
   contact:
     name: Seth Blumberg
     email: sethb@pobox.com
@@ -82,6 +82,10 @@ components:
       description: The unique identifier of a reference card (which may appear on multiple tabs)
       type: string
       pattern: '^[a-z]+(-[a-z]+)*(:[a-z]+(-[a-z]+)*)*$'
+    ReferenceSequence:
+      description: The (ascending) sequence number of a reference tab
+      type: integer
+      minimum: 1
     Markdown:
       description: Human-readable free text in Markdown format
       type: string
@@ -324,6 +328,38 @@ paths:
                   additionalProperties: false
                   required: ['id', 'text']
                 minItems: 1
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/AuthenticateResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/ErrorResponse'
+  /reference/order/{title}:
+    parameters:
+      - $ref: '#/components/parameters/ReferenceTitleParameter'
+    get:
+      description: Returns the sequence number and card order for a given tab
+      responses:
+        '200':
+          description: A tab sequence number (ascending positive integer) and a list of card IDs
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  seq:
+                    type: integer
+                    minimum: 1
+                  cards:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ReferenceId'
+                additionalProperties: false
+                required: ['seq', 'cards']
         '400':
           $ref: '#/components/responses/ErrorResponse'
         '401':

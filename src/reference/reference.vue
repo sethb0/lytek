@@ -1,70 +1,98 @@
 <script>
 /* eslint-disable node/no-unpublished-import */
+import spexLib from 'spex';
 import { mapState } from 'vuex';
-
-import rawIndex from '@ven2/refcards/data/index.yml';
 /* eslint-enable node/no-unpublished-import */
 
+import { ReferenceService } from './service';
 import MfLoading from '../shared/loading.vue';
 import MfMarkdown from './markdown.vue';
+import MfServiceLoader from '../shared/service-loader.vue';
+
+const spex = spexLib(Promise);
 
 export default {
-  inject: ['toaster'],
-  components: { MfLoading, MfMarkdown },
+  components: { MfLoading, MfMarkdown, MfServiceLoader },
   data () {
-    return { cards: [], loading: true };
+    return {
+      ReferenceService,
+      index: [],
+      cards: [],
+      initializing: true,
+      loading: true,
+    };
+    // service is deliberately not a reactive property.
   },
-  computed: {
-    ...mapState('reference', ['currentTab']),
-    ...mapState('auth', ['capabilities']),
-    index () {
-      return rawIndex.filter(
-        (record) => !record.privilege || this.capabilities.includes(record.privilege),
-      );
-    },
-  },
+  computed: mapState('reference', ['currentTab']),
   watch: {
     currentTab () {
       this.loadCurrentTab();
     },
     index (nuValue) {
       if (this.currentTab >= nuValue.length) {
-        this.$store.commit('reference/currentTab', nuValue.length - 1);
+        this.selectTab(nuValue.length - 1);
       }
       this.loadCurrentTab();
     },
   },
-  created () {
-    this.loadCurrentTab();
-  },
   methods: {
     toc (card) {
-      const header = /^#\s+(\S[^\n]*)$/mu.exec(card.markdown);
-      return header ? header[1].trim() : card.name;
+      const header = /^#\s+(\S[^\n]*)$/mu.exec(card.text);
+      return header ? header[1].trim() : card.id;
     },
     selectTab (tab) {
       this.$store.commit('reference/currentTab', tab);
     },
+    scrollTo (id) {
+      document.querySelector(`.active #${id}`).scrollIntoView();
+    },
+    scrollToToc () {
+      document.querySelector('.tab-content').scrollIntoView();
+    },
+    async serviceInitialized (service) {
+      this.service = service;
+      let index;
+      try {
+        index = await service.getTabTitles();
+      } catch (err) {
+        this.$nextTick(() => {
+          this.loading = false;
+          this.$bvToast.toast(err.message, {
+            title: 'Failed to load reference tab titles',
+            variant: 'danger',
+            toaster: this.toaster,
+          });
+        });
+        console.error(err); // eslint-disable-line no-console
+        return false;
+      }
+      this.$nextTick(() => {
+        this.index = index;
+        this.initializing = false;
+      });
+      return true;
+    },
     async loadCurrentTab () {
-      if (this.currentTab >= this.index.length) {
-        console.warn('currentTab out of range, not loading'); // eslint-disable-line no-console
+      if (!this.service) {
+        // eslint-disable-next-line no-console
+        console.error('cannot load reference tab before service is initialized');
+        return false;
+      }
+      if (this.currentTab < 0 || this.currentTab >= this.index.length) {
+        // eslint-disable-next-line no-console
+        console.warn('currentTab out of range, not loading');
         return false;
       }
       try {
         this.loading = true;
         this.cards = [];
-        const cardNames = this.index[this.currentTab].cards;
-        const content = await Promise.all(
-          cardNames.map(
-            (name) => import(/* webpackMode: "eager" */ `@ven2/refcards/data/${name}.md`),
-          ),
-        );
+        const ids = await this.service.getTabContents(this.index[this.currentTab]);
+        this.cards = Object.entries(
+          await spex.batch(ids.map((id) => this.service.getCardText(id))),
+        )
+          .map(([n, text]) => ({ id: ids[n].replace(/[:/]/gu, '_'), text }));
         this.$nextTick(() => {
           this.loading = false;
-          this.cards = content.map(({ 'default': markdown }, i) => ({
-            name: cardNames[i].replace(/\W+/gu, '-'),
-            markdown,
-          }));
         });
         return true;
       } catch (err) {
@@ -85,31 +113,39 @@ export default {
 </script>
 
 <template>
-  <b-card no-body class="reference-container">
-    <b-tabs card pills vertical>
-      <b-tab v-for="(item, n) of index" :key="item.title" :title="item.title"
-        :active="n === currentTab" @click="selectTab(n)"
-      >
-        <mf-loading v-if="loading"></mf-loading>
-        <div v-else class="reference-columns">
-          <b-card v-if="cards.length" no-body bg-variant="dark" border-variant="success"
-            class="reference-toc"
-          >
-            <b-list-group flush>
-              <b-list-group-item v-for="c of cards" :key="c.name" :href="`#${c.name}`">
-                {{ toc(c) }}
-              </b-list-group-item>
-            </b-list-group>
-          </b-card>
-          <b-card v-for="c of cards" :key="c.name" bg-variant="dark" border-variant="info"
-            class="reference-card"
-          >
-            <mf-markdown :node-id="c.name" :markdown="c.markdown"></mf-markdown>
-          </b-card>
-        </div>
-      </b-tab>
-    </b-tabs>
-  </b-card>
+  <mf-service-loader :service-constructor="ReferenceService" @initialized="serviceInitialized"
+    service-name="reference"
+  >
+    <b-card no-body class="reference-container">
+      <mf-loading v-if="initializing"></mf-loading>
+      <b-tabs v-else card pills vertical>
+        <b-tab v-for="(item, n) of index" :key="item" :title="item"
+          :active="n === currentTab" @click="selectTab(n)"
+        >
+          <mf-loading v-if="loading"></mf-loading>
+          <div v-else class="reference-columns">
+            <b-card v-if="cards.length" no-body bg-variant="dark" border-variant="success"
+              class="reference-toc"
+            >
+              <b-list-group flush>
+                <b-list-group-item v-for="c of cards" :key="c.id" :id="`linkto__${c.id}`"
+                  @click="scrollTo(c.id)"
+                >
+                  {{ toc(c) }}
+                </b-list-group-item>
+              </b-list-group>
+            </b-card>
+            <b-card v-for="c of cards" :key="c.id" bg-variant="dark" border-variant="info"
+              class="reference-card"
+            >
+              <mf-markdown :markdown="c.text" :node-id="c.id" @click="scrollToToc(c.id)">
+              </mf-markdown>
+            </b-card>
+          </div>
+        </b-tab>
+      </b-tabs>
+    </b-card>
+  </mf-service-loader>
 </template>
 
 <style>
@@ -122,6 +158,10 @@ export default {
 .reference-card, .reference-toc {
   break-inside: avoid-column;
   margin-bottom: calc(4 * var(--spacer));
+}
+
+.reference-card-markdown-title {
+  cursor: pointer;
 }
 
 .reference-card th, .reference-card td {
@@ -153,7 +193,7 @@ export default {
     display: none;
   }
 
-  .reference-container, .reference-card {
+  .reference-container, .reference-columns, .reference-card, .reference-toc {
     background-color: white;
     color: black;
   }
