@@ -1,24 +1,17 @@
 <script>
 /* eslint-disable node/no-unpublished-import */
-import { FontAwesomeIcon as FaI } from '@fortawesome/vue-fontawesome';
-import { faSyncAlt } from '@fortawesome/pro-duotone-svg-icons/faSyncAlt';
 import { mapState } from 'vuex';
 /* eslint-enable node/no-unpublished-import */
 
 import { CharmsService, MissingDataError } from './service';
-import MfLoading from '../shared/loading.vue';
+import MfServiceLoader from '../shared/service-loader.vue';
 
 export default {
-  inject: ['authService', 'toaster'],
-  components: { FaI, MfLoading },
+  inject: ['toaster'],
+  components: { MfServiceLoader },
   data () {
-    return {
-      canInitialize: true,
-      initializing: true,
-      initialized: false,
-      service: null,
-      faReload: faSyncAlt,
-    };
+    return { CharmsService };
+    // service is deliberately not a reactive property.
   },
   computed: mapState('charms', ['types', 'groups', 'charms', 'selectedType', 'selectedGroup']),
   watch: {
@@ -34,9 +27,6 @@ export default {
     selectedGroup () {
       this.groupsChanged();
     },
-  },
-  created () {
-    this.initService();
   },
   methods: {
     typesChanged () {
@@ -54,34 +44,6 @@ export default {
         this.loadCharms(this.selectedType, this.selectedGroup);
       } else {
         this.$store.dispatch('charms/setCharms', null);
-      }
-    },
-    async initService () {
-      if (this.initialized || !this.canInitialize) {
-        return;
-      }
-      this.initializing = true;
-      if (this.authService) {
-        try {
-          this.service = new CharmsService(::this.authService.getAccessToken);
-          await this.loadTypes();
-          this.$nextTick(() => {
-            this.initialized = true;
-            this.initializing = false;
-          });
-        } catch (err) {
-          this.$nextTick(() => {
-            this.initializing = false;
-            this.$bvToast.toast(err.message, {
-              title: 'Failed to initialize Charms service',
-              variant: 'danger',
-              toaster: this.toaster,
-            });
-          });
-        }
-      } else {
-        this.canInitialize = false;
-        this.initializing = false;
       }
     },
     async loadTypes () {
@@ -141,6 +103,10 @@ export default {
         this.$store.dispatch('charms/setLoading', false);
       }
     },
+    serviceInitialized (service) {
+      this.service = service;
+      return this.loadTypes();
+    },
     async reload () {
       this.service.invalidateCache();
       await this.$store.dispatch('charms/setTypes', null);
@@ -154,23 +120,11 @@ export default {
 </script>
 
 <template>
-  <div class="charms-root">
-    <router-view v-if="initialized"></router-view>
-    <mf-loading v-else-if="initializing"></mf-loading>
-    <b-card v-else-if="canInitialize" title="The Charms service failed to start."
-      text-variant="white" bg-variant="warning" class="message-card mx-auto"
-    >
-      <b-button @click="initService" size="lg" variant="primary">
-        <fa-i :icon="faReload" class="mr-2"></fa-i>
-        Try again?
-      </b-button>
-    </b-card>
-    <b-card v-else title="The authentication service failed to start."
-      text-variant="white" bg-variant="danger" class="message-card mx-auto"
-    >
-      Final death. Oblivion. I suggest you contact the administrator.
-    </b-card>
-  </div>
+  <mf-service-loader :service-constructor="CharmsService" @initialized="serviceInitialized"
+    service-name="Charms"
+  >
+    <router-view></router-view>
+  </mf-service-loader>
 </template>
 
 <style>
@@ -228,9 +182,5 @@ export default {
 .solar {
   --visualizer-charm-color: gold;
   --visualizer-cluster-color: goldenrod;
-}
-
-.message-card {
-  width: var(--breakpoint-sm);
 }
 </style>
