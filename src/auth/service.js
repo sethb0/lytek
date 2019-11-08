@@ -13,7 +13,6 @@ export class AuthService {
       connection: 'Discord',
       domain: 'mfllc.auth0.com',
       leeway: 5,
-      max_age: 7 * 24 * 60 * 60,
       redirect_uri: REDIRECT_URI,
     });
   }

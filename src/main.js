@@ -47,6 +47,7 @@ new Vue({
   },
   methods: {
     authToast (msg, title = 'Sign-in problem', variant = 'danger') {
+      console.error(msg); // eslint-disable-line no-console
       if (msg.message) {
         msg = msg.message;
       }

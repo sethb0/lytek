@@ -33,16 +33,16 @@ export default {
           a Game Master. The Princes of the Earth quiver in fear of your Viking hat!
         </span>
         <span v-else-if="isUser">an approved user. Game on!</span>
-        <span v-else-if="authorized">a restricted user. Sad!</span>
+        <span v-else>a restricted user. Sad!</span>
       </p>
     </template>
     <template v-else>
       <p>
         This website is for authorized users only. Please
-        <b-link v-if="!authenticated" :to="{ name: 'login' }">
-          sign in. <fa-i :icon="faSignIn"></fa-i>
-        </b-link>
-        <span v-else>contact the website administrator for account approval.</span>
+        <span v-if="authenticated">
+          contact the website administrator for account approval.
+        </span>
+        <b-link v-else :to="{ name: 'login' }">sign in. <fa-i :icon="faSignIn"></fa-i></b-link>
       </p>
     </template>
     <template v-if="authorized" #additional>

@@ -3,7 +3,7 @@ const developmentPresets = [
     debug: true,
     jsx: false,
     loose: true,
-    corejs: { version: '3.3', proposals: true },
+    corejs: { version: '3.4', proposals: true },
   }],
 ];
 
@@ -11,7 +11,7 @@ const productionPresets = [
   ['@vue/app', {
     jsx: false,
     loose: true,
-    corejs: { version: '3.3', proposals: true },
+    corejs: { version: '3.4', proposals: true },
   }],
 ];
 
@@ -22,7 +22,7 @@ const serverPresets = [
     modules: 'commonjs',
     jsx: false,
     loose: true,
-    corejs: { version: '3.3', proposals: true },
+    corejs: { version: '3.4', proposals: true },
   }],
 ];
 
