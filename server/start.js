@@ -82,7 +82,7 @@ async function server (mode, { BOT_API_TOKEN, KOA_SECRET, MONGODB_URI }) {
   if (mode !== 'production') {
     app.use(async (ctx, next) => {
       // eslint-disable-next-line max-len
-      ctx.set('Content-Security-Policy', "default-src 'self'; connect-src 'self' https://mfllc.auth0.com; font-src 'self' https://fonts.gstatic.com; frame-src 'self' https://mfllc.auth0.com; img-src 'self' data: https://cdn.discordapp.com; style-src 'self' https://fonts.googleapis.com; form-action 'self'; frame-ancestors 'self'; report-uri https://metalfatigue.report-uri.com/r/d/csp/enforce");
+      ctx.set('Content-Security-Policy', "default-src 'self'; connect-src 'self' https://mfllc.auth0.com; font-src 'self' https://fonts.gstatic.com; frame-src 'self' https://mfllc.auth0.com; img-src 'self' data: https://cdn.discordapp.com https://cdn.cosmicjs.com; style-src 'self' https://fonts.googleapis.com; form-action 'self'; frame-ancestors 'self'; report-uri https://metalfatigue.report-uri.com/r/d/csp/enforce");
       // eslint-disable-next-line max-len
       ctx.set('Expect-CT', 'enforce, max-age=31536000, report-uri="https://metalfatigue.report-uri.com/r/d/ct/enforce"');
       // eslint-disable-next-line max-len
