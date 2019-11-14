@@ -113,8 +113,8 @@ export default {
 </script>
 
 <template>
-  <mf-service-loader :service-constructor="ReferenceService" @initialized="serviceInitialized"
-    service-name="reference"
+  <mf-service-loader service-name="reference" :service-constructor="ReferenceService"
+    @initialized="serviceInitialized"
   >
     <b-card no-body class="reference-container">
       <mf-loading v-if="initializing"></mf-loading>
@@ -128,7 +128,7 @@ export default {
               class="reference-toc"
             >
               <b-list-group flush>
-                <b-list-group-item v-for="c of cards" :key="c.id" :id="`linkto__${c.id}`"
+                <b-list-group-item v-for="c of cards" :id="`linkto__${c.id}`" :key="c.id"
                   @click="scrollTo(c.id)"
                 >
                   {{ toc(c) }}
