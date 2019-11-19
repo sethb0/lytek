@@ -3,13 +3,12 @@
 import { mapGetters, mapState } from 'vuex';
 /* eslint-enable node/no-unpublished-import */
 
-import MfFooter from './footer.vue';
 import MfLoading from '../shared/loading.vue';
 import MfNavbar from './navbar.vue';
 import MfPrivate from './private.vue';
 
 export default {
-  components: { MfFooter, MfLoading, MfNavbar, MfPrivate },
+  components: { MfLoading, MfNavbar, MfPrivate },
   computed: {
     ...mapState('auth', ['initialized']),
     ...mapGetters('auth', ['authorized']),
@@ -29,11 +28,10 @@ export default {
 <template>
   <div id="app" role="application" class="app-root-container">
     <template v-if="initialized">
-      <mf-navbar v-if="!authRoute"></mf-navbar>
+      <mf-navbar v-if="!authRoute" class="app-navbar"></mf-navbar>
       <router-view v-if="showRouterView" class="app-main-view">
       </router-view>
       <mf-private v-else class="app-main-view"></mf-private>
-      <mf-footer></mf-footer>
     </template>
     <mf-loading v-else></mf-loading>
   </div>
@@ -50,9 +48,12 @@ div.fake-hr { height: 3px; }
   font-weight: normal;
 }
 
+.app-navbar {
+  min-height: var(--navbar-height);
+}
+
 .app-main-view {
   height: var(--main-height);
   margin-top: var(--body-margin);
-  margin-bottom: var(--footer-margin);
 }
 </style>

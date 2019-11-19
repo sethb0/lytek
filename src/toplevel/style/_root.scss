@@ -1,10 +1,8 @@
 :root {
   --spacer: #{$spacer / 4};
   --navbar-height: 3.75rem;
-  --footer-height: 3rem;
-  --footer-margin: calc(var(--spacer) * 2);
   --body-margin: calc(var(--navbar-height) + var(--spacer) * 2);
-  --main-height: calc(100vh - var(--body-margin) - var(--footer-height) - var(--footer-margin));
+  --main-height: calc(100vh - var(--body-margin));
 
   --body-background-color: #{$body-bg};
   --body-text-color: #{$body-color};
