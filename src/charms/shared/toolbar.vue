@@ -162,7 +162,7 @@ export default {
 <template>
   <b-button-toolbar class="bg-light toolbar" aria-label="Charm viewer toolbar">
     <b-button-group size="sm" class="mx-2 py-1">
-      <b-button :disabled="loading" @click="reloadCharms" title="Reload Charms">
+      <b-button :disabled="loading" title="Reload Charms" @click="reloadCharms">
         <fa-i :icon="faReload" :spin="loading"></fa-i>
         <span v-if="loading" class="sr-only">Loading…</span>
         <span v-else class="sr-only">Reload Charms</span>

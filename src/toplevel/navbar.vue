@@ -60,7 +60,7 @@ export default {
             </span>
             <span class="sr-only">User Profile</span>
           </b-nav-item>
-          <b-nav-item v-if="isAdmin" @click="disableAdmin" class="mx-md-2">
+          <b-nav-item v-if="isAdmin" class="mx-md-2" @click="disableAdmin">
             <fa-i v-b-tooltip :icon="faAdmin" size="lg" title="Disable administrative controls"
               class="text-warning mr-2"
             ></fa-i>

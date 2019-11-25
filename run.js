@@ -35,7 +35,7 @@ function makeReadConfig (dir) {
         data = fs.readFileSync(filepath, 'utf8');
       } catch (err) {
         console.error(
-          `could not read ${description} file ${filepath}: [${err.code}] ${err.message}`
+          `could not read ${description} file ${filepath}: [${err.code}] ${err.message}`,
         );
         process.exit(1);
       }

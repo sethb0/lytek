@@ -28,7 +28,7 @@ export default {
     <div class="tree-viewer-container">
       <div class="visualizer-container">
         <mf-titlebar :title="title" class="titlebar"></mf-titlebar>
-        <mf-visualizer @rendered="setTitle" @click="selectCharm" class="visualizer">
+        <mf-visualizer class="visualizer" @rendered="setTitle" @click="selectCharm">
         </mf-visualizer>
       </div>
       <mf-inspector :charm-id="selectedCharm" class="inspector"></mf-inspector>

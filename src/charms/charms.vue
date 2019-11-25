@@ -120,8 +120,8 @@ export default {
 </script>
 
 <template>
-  <mf-service-loader :service-constructor="CharmsService" @initialized="serviceInitialized"
-    service-name="Charms"
+  <mf-service-loader :service-constructor="CharmsService" service-name="Charms"
+    @initialized="serviceInitialized"
   >
     <router-view></router-view>
   </mf-service-loader>

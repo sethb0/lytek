@@ -40,7 +40,7 @@ export default {
     <b-list-group v-if="charms.length">
       <b-list-group-item v-for="c in sortedCharms" :key="c.id"
         :class="{ active: selectedCharm === c.id }"
-        @click.prevent="selectCharm(c.id)" href="#"
+        href="#" @click.prevent="selectCharm(c.id)"
       >
         {{ c.name }}
       </b-list-group-item>

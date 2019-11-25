@@ -66,7 +66,7 @@ export default {
     <b-card v-else-if="canInitialize" :title="`The ${serviceName} service failed to start.`"
       text-variant="white" bg-variant="warning" class="message-card mx-auto"
     >
-      <b-button @click="initService" size="lg" variant="primary">
+      <b-button size="lg" variant="primary" @click="initService">
         <fa-i :icon="faReload" class="mr-2"></fa-i>
         Try again?
       </b-button>

@@ -87,7 +87,7 @@ export default {
   <div class="inspector-body">
     <div class="inspector-hstrut"></div>
     <!-- eslint-disable-next-line vue/no-v-html -->
-    <div v-html="html" class="inspector-markdown"></div>
+    <div class="inspector-markdown" v-html="html"></div>
   </div>
 </template>
 

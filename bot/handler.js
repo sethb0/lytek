@@ -172,7 +172,7 @@ export async function handler (message, { logger }) {
   }
   return message[privateReply ? 'author' : 'channel'].send(
     `${result}${comment}`,
-    { reply: message.author }
+    { reply: message.author },
   );
 }
 
