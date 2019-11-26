@@ -34,13 +34,6 @@ module.exports = {
 
     config
       .module
-      .rule('markdown')
-      .test(/\.md$/u)
-      .use('raw-loader')
-      .loader('raw-loader');
-
-    config
-      .module
       .rule('misc-files')
       .test(/\.pdf$/u)
       .use('file-loader')
