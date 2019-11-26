@@ -1,9 +1,10 @@
 /* eslint require-atomic-updates: off */
 import { COLLECTIONS as REF_COLLECTIONS } from './reference-api';
+import { COLLECTIONS as CHRON_COLLECTIONS } from './chronicles-api';
 import { NotFoundError, ParameterError, discard, identity, unKebab, wrap } from './utils';
 
 const NON_CHARM_COLLECTIONS = [
-  'proxies', ...REF_COLLECTIONS,
+  'proxies', ...REF_COLLECTIONS, ...CHRON_COLLECTIONS,
 ];
 const READ_PERMISSION = 'read:charms';
 
