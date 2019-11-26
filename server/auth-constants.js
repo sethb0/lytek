@@ -4,3 +4,6 @@ export const AUDIENCE = `https://${APP_NAME}.${PARENT_DOMAIN}`;
 export const TENANT_NAME = 'mfllc';
 export const TENANT_DOMAIN = `${TENANT_NAME}.auth0.com`;
 export const CLIENT_ID = 'qKmlCFgdNi02xeV33lvtMWJ3H1cLFIgV';
+export const MGMT_CLIENT_ID = 'e8raCVZ42EbmVuQODXj7CZBGydMsyeve';
+export const MGMT_TOKEN_URL = `https://${TENANT_DOMAIN}/oauth/token`;
+export const MGMT_AUDIENCE = `https://${TENANT_DOMAIN}/api/v2/`;
