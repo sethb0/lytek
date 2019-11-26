@@ -2,6 +2,27 @@
 import { MongoError } from 'mongodb';
 import { BatchError } from 'spex';
 
+export class ForbiddenError extends Error {
+  constructor (message) {
+    super(message);
+    this.name = 'ForbiddenError';
+  }
+}
+
+export class FoundError extends Error {
+  constructor (message) {
+    super(message);
+    this.name = 'FoundError';
+  }
+}
+
+export class MediaTypeError extends Error {
+  constructor (message) {
+    super(message);
+    this.name = 'MediaTypeError';
+  }
+}
+
 export class NotAcceptedError extends Error {
   constructor (message) {
     super(message);
@@ -43,14 +64,25 @@ export function unKebab (str) {
 export function wrap (f, perm) {
   return {
     async get (ctx) {
-      const permissions = ctx.state.auth.permissions || [];
-      if (permissions.includes(perm)) {
+      if (!perm || (ctx.state.auth.permissions || []).includes(perm)) {
         try {
           await f(ctx);
         } catch (err) {
           let errorType;
           let logFunction;
-          if (err instanceof NotAcceptedError) {
+          if (err instanceof ForbiddenError) {
+            ctx.status = 403;
+            errorType = 'not_permitted';
+            logFunction = discard;
+          } else if (err instanceof FoundError) {
+            ctx.status = 409;
+            errorType = 'conflict';
+            logFunction = ::ctx.logger.warn;
+          } else if (err instanceof MediaTypeError) {
+            ctx.status = 415;
+            errorType = 'invalid_media_type';
+            logFunction = ::ctx.logger.warn;
+          } else if (err instanceof NotAcceptedError) {
             ctx.status = 406;
             errorType = 'not_accepted';
             logFunction = ::ctx.logger.warn;
