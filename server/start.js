@@ -81,11 +81,9 @@ async function server (mode, { BOT_API_TOKEN, KOA_SECRET, MONGODB_URI }) {
 
   if (mode !== 'production') {
     app.use(async (ctx, next) => {
-      // eslint-disable-next-line max-len
+      /* eslint-disable max-len */
       ctx.set('Content-Security-Policy', "default-src 'self'; connect-src 'self' https://mfllc.auth0.com; font-src 'self' https://fonts.gstatic.com; frame-src 'self' https://mfllc.auth0.com; img-src 'self' data: https://cdn.discordapp.com; style-src 'self' https://fonts.googleapis.com; form-action 'self'; frame-ancestors 'self'; report-uri https://metalfatigue.report-uri.com/r/d/csp/enforce");
-      // eslint-disable-next-line max-len
       ctx.set('Expect-CT', 'enforce, max-age=31536000, report-uri="https://metalfatigue.report-uri.com/r/d/ct/enforce"');
-      // eslint-disable-next-line max-len
       ctx.set('Feature-Policy', "autoplay 'none'; camera 'none'; document-write 'none'; encrypted-media 'none'; fullscreen 'self'; geolocation 'none'; microphone 'none'; midi 'none'; notifications 'self'; payment 'none'; push 'self'; sync-xhr 'self' https://mfllc.auth0.com; usb 'none'; vibrate 'none'; vr 'none'");
       ctx.set('Referrer-Policy', 'strict-origin-when-cross-origin');
       ctx.set('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
@@ -93,8 +91,8 @@ async function server (mode, { BOT_API_TOKEN, KOA_SECRET, MONGODB_URI }) {
       ctx.set('X-DNS-Prefetch-Control', 'off');
       ctx.set('X-Permitted-Cross-Domain-Policies', 'none');
       ctx.set('NEL', '{"report_to":"default","max_age":31536000,"include_subdomains":true}');
-      // eslint-disable-next-line max-len
       ctx.set('Report-To', '{"group":"default","max_age":31536000,"endpoints":[{"url":"https://metalfatigue.report-uri.com/a/d/g"}],"include_subdomains":true}');
+      /* eslint-enable max-len */
       await next();
     });
   }
@@ -190,6 +188,7 @@ async function augmentAuthState (ctx, next) {
   if (!ctx.state.auth) {
     ctx.state.auth = {};
   }
+  ctx.state.auth.admin = ctx.state.auth[`${AUDIENCE}/admin`] || false;
   const chronicles = ctx.state.auth[`${AUDIENCE}/chronicles`] || {};
   ctx.state.auth.player = Object.keys(chronicles);
   ctx.state.auth.gm = Object.entries(chronicles)

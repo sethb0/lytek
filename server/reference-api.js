@@ -212,7 +212,10 @@ export const order = wrap(
   PERMISSION,
 );
 
-function getQueryFilter ({ state: { auth: { player, gm } } }) {
+function getQueryFilter ({ state: { auth: { admin, player, gm } } }) {
+  if (admin) {
+    return {};
+  }
   const filter = { $or: [{ chronicles: { $exists: 0 } }] };
   if (player.length) {
     filter.$or.push({ 'chronicles.player': { $in: player } });
