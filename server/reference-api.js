@@ -9,9 +9,7 @@ export const TAB_COLLECTION = 'reftabs';
 export const COLLECTIONS = [CARD_COLLECTION, TAB_COLLECTION];
 
 const PERMISSION = 'read:reference';
-// eslint-disable-next-line unicorn/no-unsafe-regex
 const TITLE_REGEXP = /^\S+( \S+)*$/u;
-// eslint-disable-next-line unicorn/no-unsafe-regex
 const ID_REGEXP = /^[a-z]+(-[a-z]+)*(:[a-z]+(-[a-z]+)*)*$/u;
 
 export const tabs = wrap(

@@ -182,12 +182,8 @@ function checkScope (scopes) { // eslint-disable-line no-unused-vars
 }
 
 async function augmentAuthState (ctx, next) {
-  if (!ctx.state) {
-    ctx.state = {};
-  }
-  if (!ctx.state.auth) {
-    ctx.state.auth = {};
-  }
+  ctx.state ||= {};
+  ctx.state.auth ||= {};
   ctx.state.auth.admin = ctx.state.auth[`${AUDIENCE}/admin`] || false;
   const chronicles = ctx.state.auth[`${AUDIENCE}/chronicles`] || {};
   ctx.state.auth.player = Object.keys(chronicles);
