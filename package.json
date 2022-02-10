@@ -89,7 +89,7 @@
     "markdown-it-deflist": "^2.0.3",
     "markdown-it-sub": "^1.0.0",
     "markdown-it-sup": "^1.0.0",
-    "node-sass": "^4.13.0",
+    "node-sass": "^7.0.0",
     "sass-loader": "^8.0.0",
     "sinon": "^7.5.0",
     "viz.js": "^2.1.2",
